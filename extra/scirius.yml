@@ -13,7 +13,7 @@ services:
       - /etc/suricata/rules:/etc/suricata/rules
       - ../../mistborn_volumes/extra/scirius/static:/static
       - ../../mistborn_volumes/extra/scirius/data:/data
-      #- /var/run:/var/run
+      - /var/run:/var/run:ro
       - /var/run/suricata/suricata-command.socket:/var/run/suricata/suricata-command.socket
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     cap_add:
