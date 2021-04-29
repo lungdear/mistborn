@@ -19,6 +19,7 @@ services:
       - /run/systemd/system:/run/systemd/system:ro
       - /var/run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro
       - /bin/systemctl:/bin/systemctl:ro
+      - /lib:/lib:ro
     cap_add:
       - SYS_ADMIN
     privileged: true
