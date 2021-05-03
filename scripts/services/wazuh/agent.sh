@@ -8,12 +8,12 @@ fi
 
 # install curl
 echo "install curl"
-sudo apt-get install -y curl
+sudo -E apt-get install -y curl
 
 # prepare repo
 echo "Adding Wazuh Repository"
-curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo apt-key add -
-echo "deb https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee /etc/apt/sources.list.d/wazuh.list
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | sudo -E apt-key add -
+echo "deb https://packages.wazuh.com/4.x/apt/ stable main" | sudo -E tee /etc/apt/sources.list.d/wazuh.list
 
 apt-get update
 
