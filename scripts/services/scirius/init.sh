@@ -34,8 +34,10 @@ if [ "$DISTRO" == "ubuntu" ]; then
     sudo -E apt-get update
     sudo -E apt-get install -y suricata
 elif [ "$DISTRO" == "debian" ]; then
+    # retrieve version codename
+    source /etc/os-release
     echo "deb http://http.debian.net/debian $VERSION_CODENAME-backports main" | \
-        sudo -E tee /etc/apt/sources.list.d/backports.list
+        sudo -E tee /etc/apt/sources.list.d/suricata.list
     sudo -E apt-get update
     sudo -E apt-get install -y suricata -t ${VERSION_CODENAME}-backports
 else
