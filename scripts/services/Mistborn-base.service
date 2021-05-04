@@ -15,7 +15,8 @@ PermissionsStartOnly=true
 EnvironmentFile=/opt/mistborn/.env
 ExecStartPre=/usr/local/bin/docker-compose -f /opt/mistborn/base.yml down
 
-ExecStartPre=/usr/bin/docker container stop $(docker network inspect mistborn_default | grep Name | tail -n +2 | cut -d':' -f2 | tr -d ',"')
+# stop all containers joined to mistborn_default network
+ExecStartPre=-/usr/bin/bash -c "docker container stop $(docker network inspect mistborn_default | grep Name | tail -n +2 | cut -d':' -f2 | tr -d ',\"')"
 
 ExecStartPre=/usr/local/bin/docker-compose -f /opt/mistborn/base.yml build
 ExecStartPre=-/sbin/ip address add 10.2.3.1/30 dev DIFACE
