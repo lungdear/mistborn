@@ -27,7 +27,45 @@ services:
       - "traefik.http.services.scirius-service.loadbalancer.server.port=8000"
     restart: unless-stopped 
 
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:${ELASTIC_VERSION:-7.9.1}
+    # https://github.com/docker/swarmkit/issues/1951
+    hostname: "{{.Node.Hostname}}-filebeat"
+    # Need to override user so we can access the log files, and docker.sock
+    user: root
+    configs:
+      - source: fb_config
+        target: /usr/share/filebeat/filebeat.yml
+    volumes:
+      - filebeat:/usr/share/filebeat/data
+      - /var/run/docker.sock:/var/run/docker.sock
+      # This is needed for filebeat to load container log path as specified in filebeat.yml
+      - /var/lib/docker/containers/:/var/lib/docker/containers/:ro
+
+      # # This is needed for filebeat to load jenkins build log path as specified in filebeat.yml
+      # - /var/lib/docker/volumes/jenkins_home/_data/jobs/:/var/lib/docker/volumes/jenkins_home/_data/jobs/:ro
+
+      # This is needed for filebeat to load logs for system and auth modules
+      - /var/log/:/var/log/:ro
+      # This is needed for filebeat to load logs for auditd module. you might have to install audit system
+      # on ubuntu first (sudo apt-get install -y auditd audispd-plugins)
+      - /var/log/audit/:/var/log/audit/:ro
+    environment:
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
+      - KIBANA_HOST=${KIBANA_HOST}
+      - ELASTICSEARCH_USERNAME=${ELASTICSEARCH_USERNAME}
+      - ELASTICSEARCH_PASSWORD=${ELASTICSEARCH_PASSWORD}
+    # disable strict permission checks
+    command: ["--strict.perms=false"]
+
+volumes:
+  filebeat:
+
 networks:
   default:
     external:
       name: mistborn_default
+
+configs:
+  fb_config:
+    file: /opt/mistborn_volumes/scirius/init/filebeat.docker.yml
