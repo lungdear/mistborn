@@ -54,3 +54,7 @@ fi
 # sudo cp ./scripts/conf/20-suricata.conf /etc/rsyslog.d/
 # sudo chown root:root /etc/rsyslog.d/20-suricata.conf
 # sudo systemctl restart rsyslog
+
+IFACE=$(ip -o -4 route show to default | awk 'NR==1{print $5}')
+sudo sed -i "s/eth0/${IFACE}/g" /etc/suricata/suricata.yml
+sudo sed -i "s/eth0/${IFACE}/g" /etc/default/suricata

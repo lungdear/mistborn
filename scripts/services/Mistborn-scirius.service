@@ -15,9 +15,13 @@ ExecStartPre=/opt/mistborn/scripts/wrappers/mistborn_docker.sh scirius docker-co
 
 # Start container when unit is started
 ExecStart=/opt/mistborn/scripts/wrappers/mistborn_docker.sh scirius docker-compose -f /opt/mistborn/extra/scirius.yml up --build
+# Suricata
+ExecStartPost=/opt/mistborn/scripts/wrappers/mistborn_docker.sh scirius /opt/mistborn/scripts/services/scirius/suricata_start.sh
+
 # Stop container when unit is stopped
 ExecStop=/opt/mistborn/scripts/wrappers/mistborn_docker.sh scirius docker-compose -f /opt/mistborn/extra/scirius.yml down
 # Post stop
+ExecStopPost=-/opt/mistborn/scripts/wrappers/mistborn_docker.sh scirius /opt/mistborn/scripts/services/scirius/suricata_stop.sh
 
 [Install]
 WantedBy=Mistborn-base.service
