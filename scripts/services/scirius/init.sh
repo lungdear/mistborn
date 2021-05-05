@@ -4,7 +4,7 @@ set -e
 
 # detect if suricata is installed
 if [[ $(dpkg-query -W -f='${Status}' suricata 2>/dev/null | grep -c "ok installed") -eq 1 ]]; then
-    echo "Installed"
+    echo "Suricata Installed"
     exit 0
 fi
 
@@ -56,8 +56,10 @@ fi
 # sudo systemctl restart rsyslog
 
 IFACE=$(ip -o -4 route show to default | awk 'NR==1{print $5}')
-sudo sed -i "s/eth0/${IFACE}/g" /etc/suricata/suricata.yml
+sudo sed -i "s/eth0/${IFACE}/g" /etc/suricata/suricata.yaml
 sudo sed -i "s/eth0/${IFACE}/g" /etc/default/suricata
+
+sudo systemctl restart suricata
 
 mkdir -p /opt/mistborn_volumes/extra/scirius/init/ >/dev/null 2>&1
 chmod -R +x /opt/mistborn_volumes/extra/scirius/init/
