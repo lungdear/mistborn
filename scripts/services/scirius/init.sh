@@ -76,7 +76,7 @@ cd /opt/mistborn
 sudo docker-compose -f extra/wazuh.yml exec wazuh /var/ossec/bin/agent_groups -a -g suricata -q 2>/dev/null
 
 # add this host to group
-WAZUH_ID=$(sudo docker-compose -f extra/wazuh.yml exec wazuh /var/ossec/bin/manage_agents -l | grep $(hostname) | awk '{print $2}' | tr -d ',')
+WAZUH_ID=$(sudo docker-compose -f extra/wazuh.yml exec wazuh /var/ossec/bin/manage_agents -l | egrep ^\ *ID | grep $(hostname) | awk '{print $2}' | tr -d ',')
 sudo docker-compose -f extra/wazuh.yml exec wazuh /var/ossec/bin/agent_groups -a -i ${WAZUH_ID} -g suricata -q
 
 # write agent.conf
