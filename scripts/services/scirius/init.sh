@@ -61,6 +61,40 @@ sudo sed -i "s/eth0/${IFACE}/g" /etc/default/suricata
 
 sudo systemctl restart suricata
 
+# wait for service to be listening
+while ! nc -z 10.2.3.1 55000; do
+    WAIT_TIME=10
+    echo "Waiting ${WAIT_TIME} seconds for Wazuh API..."
+    sleep ${WAIT_TIME}
+done
+
+# set working directory to mistborn for docker-compose
+pushd .
+cd /opt/mistborn
+
+# ensure group exists
+sudo docker-compose -f extra/wazuh.yml exec wazuh /var/ossec/bin/agent_groups -a -g suricata -q 2>/dev/null
+
+# add this host to group
+WAZUH_ID=$(sudo docker-compose -f extra/wazuh.yml exec wazuh /var/ossec/bin/manage_agents -l | grep $(hostname) | awk '{print $2}' | tr -d ',')
+sudo docker-compose -f extra/wazuh.yml exec wazuh /var/ossec/bin/agent_groups -a -i ${WAZUH_ID} -g suricata -q
+
+# write agent.conf
+sudo docker-compose -f extra/wazuh.yml exec wazuh cat > /var/ossec/etc/shared/linux/agent.conf << EOF
+<agent_config>
+    <localfile>
+        <log_format>json</log_format>
+        <location>/var/log/suricata/eve.json</location>
+    </localfile>
+</agent_config>
+EOF
+
+# restart manager
+sudo docker-compose -f extra/wazuh.yml restart wazuh
+
+popd
+
+
 mkdir -p /opt/mistborn_volumes/extra/scirius/init/ >/dev/null 2>&1
 chmod -R +x /opt/mistborn_volumes/extra/scirius/init/
 cp /opt/mistborn/scripts/services/scirius/files/filebeat.docker.yml /opt/mistborn_volumes/extra/scirius/init/
