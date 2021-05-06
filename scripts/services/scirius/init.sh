@@ -55,12 +55,6 @@ fi
 # sudo chown root:root /etc/rsyslog.d/20-suricata.conf
 # sudo systemctl restart rsyslog
 
-IFACE=$(ip -o -4 route show to default | awk 'NR==1{print $5}')
-sudo sed -i "s/eth0/${IFACE}/g" /etc/suricata/suricata.yaml
-sudo sed -i "s/eth0/${IFACE}/g" /etc/default/suricata
-
-sudo systemctl restart suricata
-
 # wait for service to be listening
 while ! nc -z 10.2.3.1 55000; do
     WAIT_TIME=10
