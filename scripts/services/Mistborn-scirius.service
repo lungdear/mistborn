@@ -1,7 +1,7 @@
 [Unit]
 Description=Mistborn Scirius Service
-Requires=Mistborn-base.service
-After=Mistborn-base.service
+Requires=Mistborn-wazuh.service
+After=Mistborn-wazuh.service
 PartOf=Mistborn-base.service
 
 [Service]
