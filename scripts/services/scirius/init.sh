@@ -80,15 +80,15 @@ WAZUH_ID=$(sudo docker-compose -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/m
 sudo docker-compose -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/agent_groups -a -i ${WAZUH_ID} -g suricata -q
 
 # write agent.conf
-AGENT_CONFIG="
+sudo docker-compose -f extra/wazuh.yml exec -T wazuh bash -c "cat > /var/ossec/etc/shared/suricata/agent.conf << EOF
 <agent_config>
     <localfile>
         <log_format>json</log_format>
         <location>/var/log/suricata/eve.json</location>
     </localfile>
 </agent_config>
+EOF
 "
-sudo docker-compose -f extra/wazuh.yml exec -T wazuh bash -c "echo ${AGENT_CONFIG} > /var/ossec/etc/shared/suricata/agent.conf"
 
 # restart manager
 sudo docker-compose -f extra/wazuh.yml restart wazuh
