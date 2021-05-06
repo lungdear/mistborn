@@ -3,4 +3,5 @@
 systemctl start suricata
 systemctl enable suricata
 
-python /opt/mistborn/scripts/services/scirius/suri_reloader -D 
+apt-get install -y python-pyinotify python-daemon
+python /opt/mistborn/scripts/services/scirius/suri_reloader &
