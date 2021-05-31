@@ -60,9 +60,6 @@ services:
       - "traefik.http.routers.api.middlewares=mistborn_headers@file"
       - "traefik.http.routers.api.entrypoints=web"
       #- "traefik.http.services.internal.loadbalancer.server.port=5000"
-      - "traefik.http.middlewares.mistborn_auth.forwardAuth.address=http://${MISTBORN_BIND_IP}:5000/auth/"
-      - "traefik.http.middlewares.mistborn_auth.forwardAuth.trustForwardHeader=true"
-      - "traefik.http.middlewares.mistborn_auth.forwardAuth.tls.insecureSkipVerify=true"
     depends_on:
       - django
     volumes:
@@ -178,13 +175,16 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.pihole-http.rule=Host(`pihole.mistborn`)"
       - "traefik.http.routers.pihole-http.entrypoints=web"
-      - "traefik.http.routers.pihole-http.middlewares=mistborn_auth@file,add-pihole-admin"
+      - "traefik.http.routers.pihole-http.middlewares=mistborn_auth,add-pihole-admin"
       - "traefik.http.routers.pihole-https.rule=Host(`pihole.mistborn`)"
       - "traefik.http.routers.pihole-https.entrypoints=websecure"
-      - "traefik.http.routers.pihole-https.middlewares=mistborn_auth@file,add-pihole-admin"
+      - "traefik.http.routers.pihole-https.middlewares=mistborn_auth,add-pihole-admin"
       - "traefik.http.routers.pihole-https.tls.certresolver=basic"
       - "traefik.http.middlewares.add-pihole-admin.addPrefix.prefix=/admin"
       - "traefik.http.services.pihole-service.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.mistborn_auth.forwardAuth.address=http://${MISTBORN_BIND_IP}:5000/auth/"
+      - "traefik.http.middlewares.mistborn_auth.forwardAuth.trustForwardHeader=true"
+      - "traefik.http.middlewares.mistborn_auth.forwardAuth.tls.insecureSkipVerify=true"
    environment:
      - ServerIP=10.2.0.3
      - DNS1='10.2.0.2#5054' # docs say port 5054, was 54; use network_mode: host to see which port is used
