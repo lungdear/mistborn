@@ -58,7 +58,11 @@ services:
       - "traefik.http.routers.api.rule=Host(`traefik.mistborn`)"
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.middlewares=mistborn_headers@file"
-      - "traefik.http.routers.api.entrypoints=web,websecure"
+      - "traefik.http.routers.api.entrypoints=web"
+      #- "traefik.http.services.internal.loadbalancer.server.port=5000"
+      - "traefik.http.middlewares.mistborn_auth.forwardAuth.address=http://${MISTBORN_BIND_IP}:5000/auth/"
+      - "traefik.http.middlewares.mistborn_auth.forwardAuth.trustForwardHeader=true"
+      - "traefik.http.middlewares.mistborn_auth.forwardAuth.tls.insecureSkipVerify=true"
     depends_on:
       - django
     volumes:
