@@ -53,6 +53,12 @@ services:
     #image: mistborn_production_traefik
     image: traefik:v2.2
     container_name: mistborn_production_traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`traefik.mistborn`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.middlewares=mistborn_headers@file"
+      - "traefik.http.routers.api.entrypoints=web,websecure"
     depends_on:
       - django
     volumes:
@@ -67,11 +73,11 @@ services:
     #  #- "0.0.0.0:8080:8080/tcp" # dashboard
     command:
       ## API settings
-      #- --api.insecure=true
-      #- --api.dashboard=true
-      #- --api.debug=true
+      - --api.insecure=true
+      - --api.dashboard=true
+      - --api.debug=true
       ## Logs
-      - --log.level=ERROR
+      - --log.level=INFO
       ## Providers
       - --providers.docker=true
       - --providers.docker.exposedbydefault=false
