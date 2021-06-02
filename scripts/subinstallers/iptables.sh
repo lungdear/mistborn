@@ -47,7 +47,11 @@ sudo iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 if [ ! -z "${SSH_CLIENT}" ]; then
     SSH_SRC=$(echo $SSH_CLIENT | awk '{print $1}')
     SSH_PRT=$(echo $SSH_CLIENT | awk '{print $3}')
-    sudo iptables -A INPUT -p tcp -s $SSH_SRC --dport $SSH_PRT -j ACCEPT
+    if [[ $SSH_SRC =~ .*:.* ]]; then
+        sudo ip6tables -A INPUT -p tcp -s $SSH_SRC --dport $SSH_PRT -j ACCEPT
+    else
+        sudo iptables -A INPUT -p tcp -s $SSH_SRC --dport $SSH_PRT -j ACCEPT
+    fi
 fi
 
 # docker rules
