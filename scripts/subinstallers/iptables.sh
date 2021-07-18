@@ -92,6 +92,15 @@ echo "Setting ip6tables rules"
 sudo ip6tables -P INPUT ACCEPT
 sudo ip6tables -I INPUT -i lo -j ACCEPT
 sudo ip6tables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+# Allow as per RFC 4890
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 1   -j ACCEPT
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 2   -j ACCEPT
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 3   -j ACCEPT
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 4   -j ACCEPT
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 133 -j ACCEPT
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 134 -j ACCEPT
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 135 -j ACCEPT
+sudo ip6tables -A INPUT -p ipv6-icmp --icmpv6-type 136 -j ACCEPT
 sudo ip6tables -A INPUT -j MISTBORN_LOG_DROP
 
 sudo ip6tables -P INPUT DROP
