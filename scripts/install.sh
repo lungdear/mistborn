@@ -59,13 +59,22 @@ echo -e "| |  | | \__ \ |_| |_) | (_) | |  | | | |"
 echo -e "|_|  |_|_|___/\__|_.__/ \___/|_|  |_| |_|"
 echo -e ""
 
-# INPUT default admin password
-if [ -z "${MISTBORN_DEFAULT_PASSWORD}" ]; then
-    read -p "(Mistborn) Set default admin password: " -s MISTBORN_DEFAULT_PASSWORD
-    echo
-else
-    echo "MISTBORN_DEFAULT_PASSWORD is already set"
-fi
+sudo rm -rf /opt/mistborn 2>/dev/null || true
+
+# clone to /opt and change directory
+echo "Cloning $GIT_BRANCH branch from mistborn repo"
+sudo git clone https://gitlab.com/cyber5k/mistborn.git -b $GIT_BRANCH /opt/mistborn
+sudo chown -R $USER:$USER /opt/mistborn
+pushd .
+cd /opt/mistborn
+git submodule update --init --recursive
+
+# Check updates
+echo "Checking updates"
+source ./scripts/subinstallers/check_updates.sh
+
+# MISTBORN_DEFAULT_PASSWORD
+source ./scripts/subinstallers/passwd.sh
 
 # SSH keys
 if [ ! -f ~/.ssh/id_rsa ]; then
@@ -78,18 +87,7 @@ else
     echo "SSH key exists for $USER"
 fi
 
-sudo rm -rf /opt/mistborn 2>/dev/null || true
-
-# clone to /opt and change directory
-echo "Cloning $GIT_BRANCH branch from mistborn repo"
-sudo git clone https://gitlab.com/cyber5k/mistborn.git -b $GIT_BRANCH /opt/mistborn
-sudo chown -R $USER:$USER /opt/mistborn
-pushd .
-cd /opt/mistborn
-git submodule update --init --recursive
-
-# initial load update package list
-sudo apt-get update
+# initial load update package list during check_updates.sh
 
 # install figlet
 sudo -E apt-get install -y figlet
@@ -228,6 +226,7 @@ sudo resolvconf -u 1>/dev/null 2>&1
 
 echo "backup up original volumes folder"
 sudo mkdir -p ../mistborn_backup
+sudo chmod 700 ../mistborn_backup
 sudo tar -czf ../mistborn_backup/mistborn_volumes_backup.tar.gz ../mistborn_volumes 1>/dev/null 2>&1
 
 # clean docker

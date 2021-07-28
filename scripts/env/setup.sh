@@ -16,6 +16,7 @@ source /opt/mistborn/scripts/subinstallers/platform.sh
 # setup env file
 echo "" | sudo tee ${VAR_FILE}
 sudo chown mistborn:mistborn ${VAR_FILE}
+sudo chmod 600 ${VAR_FILE}
 
 # Version env variables
 echo "MISTBORN_VERSION=${MISTBORN_MAJOR_VERSION}.${MISTBORN_MINOR_VERSION}.${MISTBORN_PATCH_NUMBER}" | sudo tee -a ${VAR_FILE}
@@ -76,5 +77,7 @@ echo "MISTBORN_VOL_PATH=../../../mistborn_volumes/extra/" >> $GLOBAL_ENV
 
 # default interface
 #sudo find /etc/systemd/system/ -type f -name 'Mistborn*' | xargs sudo sed -i "s/DIFACE/$iface/"
+
+echo "DIFACE=${iface}" | sudo tee -a ${VAR_FILE}
 
 sudo systemctl daemon-reload
