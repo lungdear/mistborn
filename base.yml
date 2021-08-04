@@ -104,8 +104,10 @@ services:
       default:
       dns_net:
         ipv4_address: 10.2.1.3
+        ipv6_address: "fd0c:6164:c111:ecee::3"
     dns:
       - 10.2.1.2
+      - "fd0c:6164:c111:ecee::2"
     depends_on:
       - traefik
       - pihole
@@ -127,8 +129,10 @@ services:
       default:
       dns_net:
         ipv4_address: 10.2.1.4
+        ipv6_address: "fd0c:6164:c111:ecee::4"
     dns:
       - 10.2.1.2
+      - "fd0c:6164:c111:ecee::2"
     depends_on:
       - traefik
       - pihole
@@ -176,10 +180,12 @@ services:
       - "traefik.http.middlewares.add-pihole-admin.addPrefix.prefix=/admin"
       - "traefik.http.services.pihole-service.loadbalancer.server.port=80"
    environment:
-     - ServerIP=10.2.0.3
-     - DNS1='10.2.0.2#5054' # docs say port 5054, was 54; use network_mode: host to see which port is used
-     - DNS2=''
-     - IPv6='false'
+     - ServerIP='10.2.0.3'
+     - PIHOLE_DNS_='10.2.0.2#5054;fdce:7a9e:13ce:d817::2#5054'
+     - ServerIPv6='fdce:7a9e:13ce:d817::3'
+     #- DNS1='10.2.0.2#5054' # docs say port 5054, was 54; use network_mode: host to see which port is used
+     #- DNS2=''
+     - IPv6='true'
      - DNSMASQ_LISTENING=all
    #  TZ: 'America/New York'
    # Volumes store your data between container upgrades
@@ -192,8 +198,10 @@ services:
      default:
      pihole_net:
        ipv4_address: 10.2.0.3
+       ipv6_address: "fdce:7a9e:13ce:d817::3"
      dns_net:
        ipv4_address: 10.2.1.2
+       ipv6_address: "fd0c:6164:c111:ecee::2"
    restart: unless-stopped
 
   dnscrypt-proxy:
@@ -207,17 +215,34 @@ services:
     networks:
       pihole_net:
         ipv4_address: 10.2.0.2
+        ipv6_address: "fdce:7a9e:13ce:d817::2"
     restart: unless-stopped
 
 
 networks:
+
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
+    ipam:
+      config:
+        - subnet: "fd39:4459:ffa9:a36f::/64"
+
   pihole_net:
     driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
     ipam:
       config:
         - subnet: 10.2.0.0/29
+        - subnet: "fdce:7a9e:13ce:d817::/64"
+  
   dns_net:
     driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "true"
     ipam:
       config:
         - subnet: 10.2.1.0/24
+        - subnet: "fd0c:6164:c111:ecee::/64"
