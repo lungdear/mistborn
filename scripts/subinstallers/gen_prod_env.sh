@@ -26,15 +26,15 @@ echo "MISTBORN_PORTAL_REDIRECT_PORT=5001" >> $DJANGO_PROD_FILE
 
 cat >> ${DJANGO_PROD_FILE}<< EOF
 
-#OIDC_RP_CLIENT_ID = 
-#OIDC_RP_CLIENT_SECRET = 
+#OIDC_RP_CLIENT_ID=
+#OIDC_RP_CLIENT_SECRET=
 
-#OIDC_OP_AUTHORIZATION_ENDPOINT = "<URL of the OIDC OP authorization endpoint>"
-#OIDC_OP_TOKEN_ENDPOINT = "<URL of the OIDC OP token endpoint>"
-#OIDC_OP_USER_ENDPOINT = "<URL of the OIDC OP userinfo endpoint>"
+#OIDC_OP_AUTHORIZATION_ENDPOINT="<URL of the OIDC OP authorization endpoint>"
+#OIDC_OP_TOKEN_ENDPOINT="<URL of the OIDC OP token endpoint>"
+#OIDC_OP_USER_ENDPOINT="<URL of the OIDC OP userinfo endpoint>"
 
-#LOGIN_REDIRECT_URL = "<URL path to redirect to after login>"
-#LOGOUT_REDIRECT_URL = "<URL path to redirect to after logout>"
+#LOGIN_REDIRECT_URL="<URL path to redirect to after login>"
+#LOGOUT_REDIRECT_URL="<URL path to redirect to after logout>"
 
 OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS=3600
 
