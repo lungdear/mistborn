@@ -1,0 +1,9 @@
+[DEFAULT]
+name = rocketchat
+subdomain = rocketchat
+desc = Rocket.Chat is the leading open source team chat software solution.
+img = img/rocketchat.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+environment = environment/environment.sh
+

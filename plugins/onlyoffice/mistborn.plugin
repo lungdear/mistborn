@@ -1,0 +1,9 @@
+[DEFAULT]
+name = onlyoffice
+subdomain = onlyoffice
+desc = An open source office suite featuring online document editors, platform for document management, corporate communication, mail and project management tools.
+img = img/onlyoffice.jpg
+compose = compose/docker-compose.yml
+service = service/plugin.service
+environment = environment/environment.sh
+

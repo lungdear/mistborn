@@ -1,0 +1,10 @@
+[DEFAULT]
+name = guacamole
+subdomain = guacamole
+desc = Apache Guacamole is a clientless remote desktop gateway. It supports standard protocols like VNC, RDP, and SSH.
+img = img/guacamole.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+environment = environment/environment.sh
+resources = resources
+

@@ -1,0 +1,9 @@
+[DEFAULT]
+name = nextcloud
+subdomain = nextcloud
+desc = Nextcloud is a suite of client-server software for creating and using file hosting services. Nextcloud application functionally is similar to Dropbox.
+img = img/nextcloud.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+environment = environment/environment.sh
+

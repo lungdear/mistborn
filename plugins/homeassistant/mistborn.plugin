@@ -1,0 +1,9 @@
+[DEFAULT]
+name = homeassistant
+subdomain = homeassistant
+desc = Home Assistant is an Open source home automation software that puts local control and privacy first.
+img = img/homeassistant.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+resources = resources
+

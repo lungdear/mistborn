@@ -1,0 +1,9 @@
+[DEFAULT]
+name = raspap
+subdomain = raspap
+desc = The easiest, full-featured wireless router setup for Debian-based devices. Period. (Mistborn integration in alpha testing)
+img = img/raspap.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+environment = environment/environment.sh
+

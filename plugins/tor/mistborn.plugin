@@ -1,0 +1,8 @@
+[DEFAULT]
+name = tor
+subdomain = tor
+desc = Tor is free and open-source software for enabling anonymous communication.
+img = img/tor.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+

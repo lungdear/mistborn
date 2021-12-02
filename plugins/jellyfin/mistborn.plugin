@@ -1,0 +1,8 @@
+[DEFAULT]
+name = jellyfin
+subdomain = jellyfin
+desc = The Free Software Media System. Jellyfin is the volunteer-built media solution that puts you in control of your media. Stream to any device from your own server, with no strings attached.
+img = img/jellyfin.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+

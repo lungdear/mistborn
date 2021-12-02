@@ -1,0 +1,10 @@
+[DEFAULT]
+name = jitsi
+subdomain = jitsi
+desc = Jitsi is a collection of free and open-source multiplatform voice, videoconferencing and instant messaging applications for the web platform, Windows, Linux, Mac OS X and Android.
+img = img/jitsi.png
+compose = compose/docker-compose.yml
+service = service/plugin.service
+environment = environment/environment.sh
+resources = resources
+

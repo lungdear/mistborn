@@ -1,0 +1,8 @@
+[DEFAULT]
+name = elasticsearch
+subdomain = elasticsearch
+compose = compose/docker-compose.yml
+service = service/plugin.service
+environment = environment/environment.sh
+resources = resources
+
