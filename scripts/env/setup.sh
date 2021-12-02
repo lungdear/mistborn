@@ -29,7 +29,7 @@ echo "MISTBORN_BIND_IP=10.2.3.1" | sudo tee -a ${VAR_FILE}
 # MISTBORN_TAG
 
 GIT_BRANCH=$(git -C /opt/mistborn symbolic-ref --short HEAD || echo "master")
-MISTBORN_TAG="latest"
+MISTBORN_TAG="v1"
 if [ "$GIT_BRANCH" != "master" ]; then
     MISTBORN_TAG="test"
 fi
