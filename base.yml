@@ -130,6 +130,7 @@ services:
       - /home/mistborn/.ssh:/ssh
       - ../mistborn_volumes/base/media:/mistborn-media
       - ../mistborn_volumes/base/private_media:/mistborn-private-media
+      - ./.envs/.production/.global:/.global
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
@@ -153,6 +154,7 @@ services:
       - /home/mistborn/.ssh:/ssh
       - ../mistborn_volumes/base/media:/mistborn-media
       - ../mistborn_volumes/base/private_media:/mistborn-private-media
+      - ./.envs/.production/.global:/.global
     env_file:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
