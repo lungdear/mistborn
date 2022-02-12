@@ -10,10 +10,10 @@
     preferServerCipherSuites = true
     #sniStrict = true
 
-[http.services]
-  [http.services.cockpit.loadBalancer]
-    [[http.services.cockpit.loadBalancer.servers]]
-      url = "http://10.2.3.1:9090"
+#[http.services]
+#  [http.services.cockpit.loadBalancer]
+#    [[http.services.cockpit.loadBalancer.servers]]
+#      url = "http://10.2.3.1:9090"
 
 #[http.routers]
 #  [http.routers.cockpit]
