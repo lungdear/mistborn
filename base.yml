@@ -16,10 +16,10 @@ services:
       - "${MISTBORN_DNS_BIND_IP}:5000:5000/tcp" # auth access
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django-http.rule=Host(`home.mistborn`)"
+      - "traefik.http.routers.django-http.rule=Host(`home.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.django-http.entrypoints=web"
       - "traefik.http.routers.django-http.middlewares=mistborn_headers@file"
-      - "traefik.http.routers.django-https.rule=Host(`home.mistborn`)"
+      - "traefik.http.routers.django-https.rule=Host(`home.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.django-https.entrypoints=websecure"
       - "traefik.http.routers.django-https.middlewares=mistborn_headers@file"
       - "traefik.http.routers.django-https.tls.certresolver=basic"
@@ -51,7 +51,7 @@ services:
     #  context: .
     #  dockerfile: ./compose/production/traefik/Dockerfile
     #image: mistborn_production_traefik
-    image: traefik:v2.4.9
+    image: traefik:v2.5.7
     container_name: mistborn_production_traefik
     depends_on:
       - django
@@ -82,6 +82,10 @@ services:
       - --entrypoints.websecure.address=:443
       ## Certificates
       #- --serversTransport.insecureSkipVerify=true
+      #- --certificatesresolvers.enclaveresolver.acme.email=mistborn@localhost
+      #- --certificatesresolvers.enclaveresolver.acme.storage=acme.json
+      # used during the challenge
+      #- --certificatesresolvers.enclaveresolver.acme.httpchallenge.entrypoint=web
     restart: unless-stopped
 
   portal:
@@ -200,10 +204,10 @@ services:
      - "${MISTBORN_DNS_BIND_IP}:53:53/udp"
    labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pihole-http.rule=Host(`pihole.mistborn`)"
+      - "traefik.http.routers.pihole-http.rule=Host(`pihole.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.pihole-http.entrypoints=web"
       - "traefik.http.routers.pihole-http.middlewares=mistborn_auth@file,add-pihole-admin"
-      - "traefik.http.routers.pihole-https.rule=Host(`pihole.mistborn`)"
+      - "traefik.http.routers.pihole-https.rule=Host(`pihole.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.pihole-https.entrypoints=websecure"
       - "traefik.http.routers.pihole-https.middlewares=mistborn_auth@file,add-pihole-admin"
       - "traefik.http.routers.pihole-https.tls.certresolver=basic"

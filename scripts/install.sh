@@ -84,6 +84,9 @@ source ./scripts/subinstallers/check_install_ready.sh
 # MISTBORN_DEFAULT_PASSWORD
 source ./scripts/subinstallers/passwd.sh
 
+# MISTBORN_BASE_DOMAIN
+source ./scripts/subinstallers/domain.sh
+
 # Install Cockpit?
 if [ -z "${MISTBORN_INSTALL_COCKPIT}" ]; then
     read -p "Install Cockpit (a somewhat resource-heavy system management graphical user interface -- NOT RECOMMENDED on Raspberry Pi)? [y/N]: " MISTBORN_INSTALL_COCKPIT
@@ -205,7 +208,7 @@ IPV4_PUBLIC="10.2.3.1"
 
 # generate production .env file
 #if [ ! -d ./.envs/.production ]; then
-./scripts/subinstallers/gen_prod_env.sh "$MISTBORN_DEFAULT_PASSWORD"
+./scripts/subinstallers/gen_prod_env.sh "$MISTBORN_DEFAULT_PASSWORD" "$MISTBORN_BASE_DOMAIN"
 #fi
 
 # unattended upgrades
