@@ -16,10 +16,10 @@ services:
       - "${MISTBORN_DNS_BIND_IP}:5000:5000/tcp" # auth access
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django-http.rule=Host(`home.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.django-http.rule=Host(`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.django-http.entrypoints=web"
       - "traefik.http.routers.django-http.middlewares=mistborn_headers@file"
-      - "traefik.http.routers.django-https.rule=Host(`home.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.django-https.rule=Host(`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.django-https.entrypoints=websecure"
       - "traefik.http.routers.django-https.middlewares=mistborn_headers@file"
       - "traefik.http.routers.django-https.tls.certresolver=basic"
@@ -97,7 +97,7 @@ services:
     ports:
       - "${MISTBORN_DNS_BIND_IP}:5001:80"
     environment:
-      - SERVER_REDIRECT=home.mistborn
+      - SERVER_REDIRECT="home.${MISTBORN_BASE_DOMAIN}"
     # optionally define path to redirect all requests
     # if not set nginx var $request_uri is used
       - SERVER_REDIRECT_PATH=/
@@ -204,10 +204,10 @@ services:
      - "${MISTBORN_DNS_BIND_IP}:53:53/udp"
    labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pihole-http.rule=Host(`pihole.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.pihole-http.rule=Host(`pihole.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.pihole-http.entrypoints=web"
       - "traefik.http.routers.pihole-http.middlewares=mistborn_auth@file,add-pihole-admin"
-      - "traefik.http.routers.pihole-https.rule=Host(`pihole.mistborn`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.pihole-https.rule=Host(`pihole.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.pihole-https.entrypoints=websecure"
       - "traefik.http.routers.pihole-https.middlewares=mistborn_auth@file,add-pihole-admin"
       - "traefik.http.routers.pihole-https.tls.certresolver=basic"
