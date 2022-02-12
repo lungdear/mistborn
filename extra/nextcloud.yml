@@ -19,6 +19,7 @@ services:
       - "traefik.http.services.nextcloud-service.loadbalancer.server.port=80"
     volumes:
       - ../../mistborn_volumes/extra/nextcloud:/var/www/html
+      #- ../../mistborn_volumes/extra/nextcloud-config.php:/var/www/html/config/config.php:ro
     environment:
       - VIRTUAL_HOST=nextcloud.mistborn
     restart: unless-stopped
