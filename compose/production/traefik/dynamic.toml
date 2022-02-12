@@ -17,7 +17,7 @@
 
 [http.routers]
   [http.routers.cockpit]
-    rule = "Host(`cockpit.mistborn`)"
+    rule = "Host(`cockpit.${MISTBORN_BASE_DOMAIN}`)"
     service = "cockpit"
     entrypoints = ["web", "websecure"]
     middlewares = ["mistborn_auth"]
