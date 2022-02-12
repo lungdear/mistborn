@@ -4,7 +4,7 @@
 while [ -z "${MISTBORN_BASE_DOMAIN}" ]; do
     echo
     echo "(Mistborn) The domain may container alphanumeric characters and periods"
-    read -p "(Mistborn) Set base domain: [mistborn]" MISTBORN_BASE_DOMAIN
+    read -p "(Mistborn) Set base domain: [mistborn] " MISTBORN_BASE_DOMAIN
     echo
     MISTBORN_BASE_DOMAIN=${MISTBORN_BASE_DOMAIN:-mistborn}
 
