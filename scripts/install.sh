@@ -304,3 +304,4 @@ popd
 figlet "Mistborn Installed"
 echo "Watch Mistborn start: sudo journalctl -xfu Mistborn-base"
 echo "Retrieve Wireguard default config for admin: sudo mistborn-cli getconf" 
+echo "With WireGuard connection, navgiate to http://home.${MISTBORN_BASE_DOMAIN}"
