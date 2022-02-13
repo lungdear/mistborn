@@ -1,8 +1,8 @@
-#[tls.stores]
-#  [tls.stores.default]
-#    [tls.stores.default.defaultCertificate]
-#      certFile = "/tls/cert.crt"
-#      keyFile = "/tls/cert.key"
+[tls.stores]
+  [tls.stores.default]
+    [tls.stores.default.defaultCertificate]
+      certFile = "/tls/cert.crt"
+      keyFile = "/tls/cert.key"
 
 [tls.options]
   [tls.options.default]
