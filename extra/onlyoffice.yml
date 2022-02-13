@@ -13,12 +13,15 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.onlyoffice-http.rule=Host(`onlyoffice.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.onlyoffice-http.entrypoints=web"
-      - "traefik.http.routers.onlyoffice-http.middlewares=mistborn_auth@file"
+      - "traefik.http.routers.onlyoffice-http.middlewares=mistborn_auth@file,onlyoffice-headers"
       - "traefik.http.routers.onlyoffice-https.rule=Host(`onlyoffice.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.onlyoffice-https.entrypoints=websecure"
-      - "traefik.http.routers.onlyoffice-https.middlewares=mistborn_auth@file"
+      - "traefik.http.routers.onlyoffice-https.middlewares=mistborn_auth@file,onlyoffice-headers"
       - "traefik.http.routers.onlyoffice-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.onlyoffice-service.loadbalancer.server.port=80"
+      # Headers for onlyoffice, https://github.com/ONLYOFFICE/onlyoffice-nextcloud/issues/151
+      - "traefik.http.middlewares.onlyoffice-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.onlyoffice-headers.headers.accesscontrolalloworiginlist=*"
     restart: unless-stopped 
 
 networks:
