@@ -15,10 +15,11 @@ sudo chown mistborn:mistborn ${VAR_FILE}
 sudo chmod 600 ${VAR_FILE}
 
 # MISTBORN_BASE_DOMAIN
-if [[ -f "$DJANGO_PROD_FILE" ]]; then
+if [[ -f "$DJANGO_PROD_FILE" ]] && grep -q -wi "MISTBORN_BASE_DOMAIN" "${DJANGO_PROD_FILE}" ; then
 
     MISTBORN_BASE_DOMAIN=$(grep -e "MISTBORN_BASE_DOMAIN=.*" ${DJANGO_PROD_FILE} | awk -F"=" '{print $2}')
     echo "MISTBORN_BASE_DOMAIN=${MISTBORN_BASE_DOMAIN}" | sudo tee -a ${VAR_FILE}
+
 else
     echo "MISTBORN_BASE_DOMAIN=mistborn" | sudo tee -a ${VAR_FILE}
 fi
