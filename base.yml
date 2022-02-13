@@ -210,7 +210,7 @@ services:
   
   pihole:
    container_name: mistborn_production_pihole
-   image: pihole/pihole:2022.02.1
+   image: pihole/pihole:2022.01.1
    env_file:
      - ./.envs/.production/.pihole
    ports:
