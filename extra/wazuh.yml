@@ -40,7 +40,7 @@ services:
       - "traefik.http.routers.wazuhk-https.rule=Host(`wazuh.mistborn`)"
       - "traefik.http.routers.wazuhk-https.entrypoints=websecure"
       - "traefik.http.routers.wazuhk-https.middlewares=mistborn_auth@file"
-      - "traefik.http.routers.wazuhk-https.tls.certresolver=basic"
+      - "traefik.http.routers.wazuhk-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.wazuhk-service.loadbalancer.server.port=5601"
     #ports:
     #  - "${MISTBORN_BIND_IP}:5601:5601"

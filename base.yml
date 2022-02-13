@@ -22,7 +22,7 @@ services:
       - "traefik.http.routers.django-https.rule=Host(`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.django-https.entrypoints=websecure"
       - "traefik.http.routers.django-https.middlewares=mistborn_headers@file"
-      - "traefik.http.routers.django-https.tls.certresolver=basic"
+      - "traefik.http.routers.django-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.django-service.loadbalancer.server.port=5000"
     env_file:
       - ./.envs/.production/.django
@@ -53,8 +53,8 @@ services:
     #image: mistborn_production_traefik
     image: traefik:v2.5.7
     container_name: mistborn_production_traefik
-    depends_on:
-      - django
+    #depends_on:
+    #  - django
     volumes:
       #- production_traefik:/etc/traefik/acme
       - ./compose/production/traefik/dynamic.toml:/dynamic.toml:ro
@@ -82,10 +82,10 @@ services:
       - --entrypoints.websecure.address=:443
       ## Certificates
       #- --serversTransport.insecureSkipVerify=true
-      #- --certificatesresolvers.enclaveresolver.acme.email=mistborn@localhost
-      #- --certificatesresolvers.enclaveresolver.acme.storage=acme.json
+      - --certificatesresolvers.mistbornresolver.acme.email=mistborn@${MISTBORN_BASE_DOMAIN}
+      - --certificatesresolvers.mistbornresolver.acme.storage=acme.json
       # used during the challenge
-      #- --certificatesresolvers.enclaveresolver.acme.httpchallenge.entrypoint=web
+      - --certificatesresolvers.mistbornresolver.acme.httpchallenge.entrypoint=web
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cockpit-http.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
@@ -96,7 +96,7 @@ services:
       - "traefik.http.routers.cockpit-https.entrypoints=websecure"
       - "traefik.http.routers.cockpit-https.middlewares=mistborn_headers@file"
       - "traefik.http.routers.cockpit-https.service=cockpit"
-      - "traefik.http.routers.cockpit-https.tls.certresolver=basic"
+      - "traefik.http.routers.cockpit-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.cockpit.loadbalancer.server.port=9090"
     restart: unless-stopped
 
@@ -208,7 +208,7 @@ services:
   
   pihole:
    container_name: mistborn_production_pihole
-   image: pihole/pihole:2022.01.1
+   image: pihole/pihole:2022.02.1
    env_file:
      - ./.envs/.production/.pihole
    ports:
@@ -222,7 +222,7 @@ services:
       - "traefik.http.routers.pihole-https.rule=Host(`pihole.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.pihole-https.entrypoints=websecure"
       - "traefik.http.routers.pihole-https.middlewares=mistborn_auth@file,add-pihole-admin"
-      - "traefik.http.routers.pihole-https.tls.certresolver=basic"
+      - "traefik.http.routers.pihole-https.tls.certresolver=mistbornresolver"
       - "traefik.http.middlewares.add-pihole-admin.addPrefix.prefix=/admin"
       - "traefik.http.services.pihole-service.loadbalancer.server.port=80"
    environment:

@@ -23,7 +23,7 @@ services:
       - "traefik.http.routers.chat-https.rule=Host(`chat.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.chat-https.entrypoints=websecure"
       - "traefik.http.routers.chat-https.middlewares=mistborn_auth@file"
-      - "traefik.http.routers.chat-https.tls.certresolver=basic"
+      - "traefik.http.routers.chat-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.chat-service.loadbalancer.server.port=3000"
     depends_on:
       - mongo
