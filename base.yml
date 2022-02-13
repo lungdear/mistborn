@@ -79,7 +79,9 @@ services:
       #- --providers.docker.network=default
       ## Entrypoints
       - --entrypoints.web.address=:80
+      - --entryPoints.web.forwardedHeaders.trustedIPs=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
       - --entrypoints.websecure.address=:443
+      - --entryPoints.websecure.forwardedHeaders.trustedIPs=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
       ## Certificates
       #- --serversTransport.insecureSkipVerify=true
       - --certificatesresolvers.mistbornresolver.acme.email=mistborn@${MISTBORN_BASE_DOMAIN}
