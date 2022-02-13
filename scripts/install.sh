@@ -107,9 +107,6 @@ fi
 
 # initial load update package list during check_updates.sh
 
-# install figlet
-sudo -E apt-get install -y figlet
-
 # get os and distro
 source ./scripts/subinstallers/platform.sh
 
@@ -162,7 +159,7 @@ sudo systemctl enable ssh
 sudo systemctl restart ssh
 
 # Additional tools fail2ban
-sudo -E apt-get install -y dnsutils fail2ban
+sudo -E apt-get install -y dnsutils fail2ban pwgen
 
 # Install kernel headers
 if [ "$DISTRO" == "ubuntu" ] || [ "$DISTRO" == "debian" ]; then
