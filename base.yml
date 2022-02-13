@@ -88,10 +88,15 @@ services:
       #- --certificatesresolvers.enclaveresolver.acme.httpchallenge.entrypoint=web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cockpit.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
-      - "traefik.http.routers.cockpit.service=cockpit"
-      - "traefik.http.routers.cockpit.entrypoints=web,websecure"
-      - "traefik.http.routers.cockpit.middlewares=mistborn_auth@file"
+      - "traefik.http.routers.cockpit-http.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.cockpit-http.entrypoints=web"
+      - "traefik.http.routers.cockpit-http.middlewares=mistborn_headers@file"
+      - "traefik.http.routers.cockpit-http.service=cockpit"
+      - "traefik.http.routers.cockpit-https.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.cockpit-https.entrypoints=websecure"
+      - "traefik.http.routers.cockpit-https.middlewares=mistborn_headers@file"
+      - "traefik.http.routers.cockpit-https.service=cockpit"
+      - "traefik.http.routers.cockpit-https.tls.certresolver=basic"
       - "traefik.http.services.cockpit.loadbalancer.server.port=9090"
     restart: unless-stopped
 
