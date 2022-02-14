@@ -16,10 +16,10 @@ services:
       - "${MISTBORN_DNS_BIND_IP}:5000:5000/tcp" # auth access
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django-http.rule=Host(`${MISTBORN_BASE_DOMAIN}`,`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.django-http.rule=Host(`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.django-http.entrypoints=web"
       - "traefik.http.routers.django-http.middlewares=mistborn_headers@file"
-      - "traefik.http.routers.django-https.rule=Host(`${MISTBORN_BASE_DOMAIN}`,`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.django-https.rule=Host(`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
       - "traefik.http.routers.django-https.entrypoints=websecure"
       - "traefik.http.routers.django-https.middlewares=mistborn_headers@file"
       - "traefik.http.routers.django-https.tls.certresolver=mistbornresolver"
