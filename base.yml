@@ -60,6 +60,7 @@ services:
       - ./compose/production/traefik/dynamic.toml:/dynamic.toml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ../mistborn_volumes/base/tls:/tls:ro
+      - ../mistborn_volumes/base/acme:/acme
     network_mode: host
       #ports:
     #  - "0.0.0.0:80:80/tcp"
@@ -85,7 +86,7 @@ services:
       ## Certificates
       #- --serversTransport.insecureSkipVerify=true
       - --certificatesresolvers.mistbornresolver.acme.email=mistborn@${MISTBORN_BASE_DOMAIN}
-      - --certificatesresolvers.mistbornresolver.acme.storage=acme.json
+      - --certificatesresolvers.mistbornresolver.acme.storage=/acme/acme.json
       # used during the challenge
       - --certificatesresolvers.mistbornresolver.acme.httpchallenge.entrypoint=web
     labels:
