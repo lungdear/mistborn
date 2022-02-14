@@ -270,6 +270,7 @@ sudo grep -qF "$(hostname)" /etc/hosts && echo "$(hostname) already in /etc/host
 
 # resolve all *.mistborn domains
 echo "address=/.${MISTBORN_BASE_DOMAIN}/10.2.3.1" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
+echo "address=/${MISTBORN_BASE_DOMAIN}/10.2.3.1" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
 
 # ResolvConf (OpenResolv installed with Wireguard)
 #sudo sed -i "s/#name_servers.*/name_servers=$IPV4_PUBLIC/" /etc/resolvconf.conf
