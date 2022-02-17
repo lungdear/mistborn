@@ -15,8 +15,8 @@ fi
 
 HTTPD="000"
 until [ "$HTTPD" == "200" ]; do
-    echo "Waiting for Nextcloud to start... ${HTTPD}"
-    sleep 5
+    echo "Waiting for Nextcloud to start... ${HTTPD} at nextcloud.${MISTBORN_BASE_DOMAIN}"
+    sleep 10 
     HTTPD=$(curl -A "Web Check" -sL --connect-timeout 3 -w "%{http_code}\n" "http://nextcloud.${MISTBORN_BASE_DOMAIN}" -o /dev/null)
 done
 

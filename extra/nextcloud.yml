@@ -1,12 +1,26 @@
 version: '3'
 
+volumes:
+  nextcloud-db:
+
 services:  
+  nextcloud-db:
+    image: mariadb:10.5.11
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - nextcloud-db:/var/lib/mysql
+    env_file:
+      - ../.envs/.production/.nextcloud-db
+  
   nextcloud:
     image: nextcloud:22.2.4-apache
     container_name: mistborn_production_nextcloud
+    depends_on:
+      - nextcloud-db
     env_file:
-      - ../.envs/.production/.postgres
       - ../.envs/.production/.nextcloud
+      - ../.envs/.production/.nextcloud-db
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nextcloud-http.rule=Host(`nextcloud.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
@@ -20,8 +34,11 @@ services:
     volumes:
       - ../../mistborn_volumes/extra/nextcloud:/var/www/html
       #- ../../mistborn_volumes/extra/nextcloud-config.php:/var/www/html/config/config.php:ro
+    links:
+      - nextcloud-db
     environment:
       - VIRTUAL_HOST=nextcloud.mistborn
+      - MYSQL_HOST=nextcloud-db
     restart: unless-stopped
 
 networks:
