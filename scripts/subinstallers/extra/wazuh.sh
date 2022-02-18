@@ -11,7 +11,7 @@ echo "ELASTICSEARCH_PASSWORD=$MISTBORN_DEFAULT_PASSWORD" >> $WAZUH_PROD_FILE
 # kibana odfe
 # kibana-odfe/config/wazuh_app_config.sh
 # https://wazuh
-echo "WAZUH_API_URL=https://10.2.3.1" >> $WAZUH_PROD_FILE
+echo "WAZUH_API_URL=https://${MISTBORN_INTERNAL_IP:-10.2.3.1}" >> $WAZUH_PROD_FILE
 echo "API_PORT=55000" >> $WAZUH_PROD_FILE
 echo "API_USERNAME=wazuh-wui" >> $WAZUH_PROD_FILE
 
@@ -46,7 +46,7 @@ echo "API_PASSWORD=${API_PASSWORD}" >> $WAZUH_PROD_FILE
 
 # kibana-odfe/config/entrypoint.sh:
 # https://elasticsearch:9200
-echo "ELASTICSEARCH_URL=https://10.2.3.1:9200" >> $WAZUH_PROD_FILE
+echo "ELASTICSEARCH_URL=https://${MISTBORN_INTERNAL_IP:-10.2.3.1}:9200" >> $WAZUH_PROD_FILE
 
 
 cat >> ${WAZUH_PROD_FILE}<< EOF

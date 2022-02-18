@@ -75,7 +75,7 @@ sudo sed -i "s/eth0/${IFACE}/g" /etc/default/suricata
 #systemctl restart suricata
 
 # wait for service to be listening
-while ! nc -z 10.2.3.1 55000; do
+while ! nc -z ${MISTBORN_INTERNAL_IP:-10.2.3.1} 55000; do
     WAIT_TIME=10
     echo "Waiting ${WAIT_TIME} seconds for Wazuh API..."
     sleep ${WAIT_TIME}

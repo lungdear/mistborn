@@ -203,7 +203,7 @@ sudo pip3 install -e ./modules/mistborn-cli
 # final setup vars
 
 #IPV4_PUBLIC=$(ip -o -4 route show default | egrep -o 'dev [^ ]*' | awk '{print $2}' | xargs ip -4 addr show | grep 'inet ' | awk '{print $2}' | grep -o "^[0-9.]*"  | tr -cd '\11\12\15\40-\176' | head -1) # tail -1 to get last
-IPV4_PUBLIC="10.2.3.1"
+IPV4_PUBLIC="${MISTBORN_INTERNAL_IP:-10.2.3.1}"
 
 
 # generate production .env file
@@ -271,14 +271,17 @@ sudo systemctl disable dnsmasq 2>/dev/null || true
 # hostname in /etc/hosts
 sudo grep -qF "$(hostname)" /etc/hosts && echo "$(hostname) already in /etc/hosts" || echo "127.0.1.1 $(hostname) $(hostname)" | sudo tee -a /etc/hosts
 
+# MISTBORN_INTERNAL_IP
+IP_INT="${MISTBORN_INTERNAL_IP:-10.2.3.1}"
+
 # resolve all *.mistborn domains
-echo "address=/.${MISTBORN_BASE_DOMAIN}/10.2.3.1" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
-echo "address=/${MISTBORN_BASE_DOMAIN}/10.2.3.1" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
+echo "address=/.${MISTBORN_BASE_DOMAIN}/${IP_INT}" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
+echo "address=/${MISTBORN_BASE_DOMAIN}/${IP_INT}" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
 
 # ResolvConf (OpenResolv installed with Wireguard)
 #sudo sed -i "s/#name_servers.*/name_servers=$IPV4_PUBLIC/" /etc/resolvconf.conf
-sudo sed -i "s/#name_servers.*/name_servers=10.2.3.1/" /etc/resolvconf.conf
-sudo sed -i "s/name_servers.*/name_servers=10.2.3.1/" /etc/resolvconf.conf
+sudo sed -i "s/#name_servers.*/name_servers=${IP_INT}/" /etc/resolvconf.conf
+sudo sed -i "s/name_servers.*/name_servers=${IP_INT}/" /etc/resolvconf.conf
 #sudo sed -i "s/#name_servers.*/name_servers=127.0.0.1/" /etc/resolvconf.conf
 sudo resolvconf -u 1>/dev/null 2>&1
 
