@@ -81,6 +81,9 @@ services:
       ## Entrypoints
       - --entrypoints.web.address=:80
       - --entryPoints.web.forwardedHeaders.trustedIPs=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
       - --entrypoints.websecure.address=:443
       - --entryPoints.websecure.forwardedHeaders.trustedIPs=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
       ## Certificates
