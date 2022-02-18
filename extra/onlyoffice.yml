@@ -13,10 +13,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.onlyoffice-http.rule=Host(`onlyoffice.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.onlyoffice-http.entrypoints=web"
-      - "traefik.http.routers.onlyoffice-http.middlewares=mistborn_auth@file,onlyoffice-headers"
+      - "traefik.http.routers.onlyoffice-http.middlewares=mistborn_auth@docker,onlyoffice-headers"
       - "traefik.http.routers.onlyoffice-https.rule=Host(`onlyoffice.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.onlyoffice-https.entrypoints=websecure"
-      - "traefik.http.routers.onlyoffice-https.middlewares=mistborn_auth@file,onlyoffice-headers"
+      - "traefik.http.routers.onlyoffice-https.middlewares=mistborn_auth@docker,onlyoffice-headers"
       - "traefik.http.routers.onlyoffice-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.onlyoffice-service.loadbalancer.server.port=80"
       # Headers for onlyoffice, https://github.com/ONLYOFFICE/onlyoffice-nextcloud/issues/151

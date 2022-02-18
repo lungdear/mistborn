@@ -19,10 +19,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.chat-http.rule=Host(`chat.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.chat-http.entrypoints=web"
-      - "traefik.http.routers.chat-http.middlewares=mistborn_auth@file"
+      - "traefik.http.routers.chat-http.middlewares=mistborn_auth@docker"
       - "traefik.http.routers.chat-https.rule=Host(`chat.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.chat-https.entrypoints=websecure"
-      - "traefik.http.routers.chat-https.middlewares=mistborn_auth@file"
+      - "traefik.http.routers.chat-https.middlewares=mistborn_auth@docker"
       - "traefik.http.routers.chat-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.chat-service.loadbalancer.server.port=3000"
     depends_on:

@@ -21,10 +21,10 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.syncthing-http.rule=Host(`syncthing.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.syncthing-http.entrypoints=web"
-      - "traefik.http.routers.syncthing-http.middlewares=mistborn_auth@file"
+      - "traefik.http.routers.syncthing-http.middlewares=mistborn_auth@docker"
       - "traefik.http.routers.syncthing-https.rule=Host(`syncthing.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.syncthing-https.entrypoints=websecure"
-      - "traefik.http.routers.syncthing-https.middlewares=mistborn_auth@file"
+      - "traefik.http.routers.syncthing-https.middlewares=mistborn_auth@docker"
       - "traefik.http.routers.syncthing-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.syncthing-service.loadbalancer.server.port=8384"
     restart: unless-stopped
