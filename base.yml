@@ -101,6 +101,9 @@ services:
       - "traefik.http.routers.cockpit-https.service=cockpit"
       - "traefik.http.routers.cockpit-https.tls.certresolver=mistbornresolver"
       - "traefik.http.services.cockpit.loadbalancer.server.port=9090"
+      - "traefik.http.middlewares.mistborn_auth.forwardauth.address=http://django:5000/auth/"
+      - "traefik.http.middlewares.mistborn_auth.forwardauth.trustforwardheader=true"
+      - "traefik.http.middlewares.mistborn_auth.forwardauth.tls.insecureskipverify=true"
     restart: unless-stopped
 
   portal:

@@ -23,11 +23,11 @@
 #    middlewares = ["mistborn_auth"]
 
 [http.middlewares]
-  [http.middlewares.mistborn_auth.forwardAuth]
-    address = "http://10.2.3.1:5000/auth/"
-    trustForwardHeader = true
-    [http.middlewares.mistborn_auth.forwardAuth.tls]
-      insecureSkipVerify = true
+  #[http.middlewares.mistborn_auth.forwardAuth]
+  #  address = "http://10.2.3.1:5000/auth/"
+  #  trustForwardHeader = true
+  #  [http.middlewares.mistborn_auth.forwardAuth.tls]
+  #    insecureSkipVerify = true
   
   [http.middlewares.mistborn_headers.headers]
     hostsProxyHeaders = ['X-CSRFToken']
