@@ -87,6 +87,9 @@ source ./scripts/subinstallers/passwd.sh
 # MISTBORN_BASE_DOMAIN
 source ./scripts/subinstallers/domain.sh
 
+# MISTBORN_INTERNAL_IP
+source ./scripts/subinstallers/serverip.sh
+
 # Install Cockpit?
 if [ -z "${MISTBORN_INSTALL_COCKPIT}" ]; then
     read -p "Install Cockpit (a somewhat resource-heavy system management graphical user interface -- NOT RECOMMENDED on Raspberry Pi)? [y/N]: " MISTBORN_INSTALL_COCKPIT

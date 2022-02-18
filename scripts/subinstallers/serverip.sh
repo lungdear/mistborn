@@ -14,7 +14,7 @@ try:
         print('Not an IPv4 address')
         sys.exit(-1)
     
-    if ipaddress.ip_network("$1").subnet_of(ipaddress.ip_network('10.0.0.0/8')):
+    if ipaddress.ip_network("$1").subnet_of(ipaddress.ip_network('10.3.0.0/16')):
         #print('valid address')
         sys.exit(0)
     
@@ -27,17 +27,21 @@ except Exception as e:
 END
 }
 
-MISTBORN_SERVER_IP="0.0.0.0"
-until valid_server_ip "${MISTBORN_SERVER_IP}"; do
+MISTBORN_INTERNAL_IP="0.0.0.0"
+until valid_server_ip "${MISTBORN_INTERNAL_IP}"; do
 
-    >&2 echo "(Mistborn) Enter a valid IP address in 10.0.0.0/8"
-    read -p "(Mistborn) Set server IP: [10.2.3.1] " MISTBORN_SERVER_IP
+    >&2 echo "(Mistborn) Enter a valid IP address in 10.3.0.0/16"
+    read -p "(Mistborn) Set server IP: [10.3.3.1] " MISTBORN_INTERNAL_IP
     echo
-    MISTBORN_SERVER_IP=${MISTBORN_SERVER_IP:-10.2.3.1}
+    MISTBORN_INTERNAL_IP=${MISTBORN_INTERNAL_IP:-10.3.3.1}
 done
 >&2 echo "Valid IP address!"
 
 
+# add to bashrc
+sed -i "s/MISTBORN_INTERNAL_IP.*//" ~/.bashrc
+echo "MISTBORN_INTERNAL_IP=${MISTBORN_INTERNAL_IP}" | tee -a ~/.bashrc
+
 echo
-echo "MISTBORN_SERVER_IP is set: ${MISTBORN_SERVER_IP}"
+echo "MISTBORN_INTERNAL_IP is set: ${MISTBORN_INTERNAL_IP}"
 echo
