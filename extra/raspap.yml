@@ -7,10 +7,10 @@ services:
     #network_mode: host
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.raspap-http.rule=Host(`raspap.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.raspap-http.rule=Host(`raspap.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.raspap-http.entrypoints=web"
       - "traefik.http.routers.raspap-http.middlewares=mistborn_auth@file"
-      - "traefik.http.routers.raspap-https.rule=Host(`raspap.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.raspap-https.rule=Host(`raspap.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.raspap-https.entrypoints=websecure"
       - "traefik.http.routers.raspap-https.middlewares=mistborn_auth@file"
       - "traefik.http.routers.raspap-https.tls.certresolver=mistbornresolver"

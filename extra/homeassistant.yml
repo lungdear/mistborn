@@ -10,10 +10,10 @@ services:
       - TZ=America/New_York
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.homeassistant-http.rule=Host(`homeassistant.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.homeassistant-http.rule=Host(`homeassistant.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.homeassistant-http.entrypoints=web"
       - "traefik.http.routers.homeassistant-http.middlewares=mistborn_auth@file"
-      - "traefik.http.routers.homeassistant-https.rule=Host(`homeassistant.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.homeassistant-https.rule=Host(`homeassistant.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.homeassistant-https.entrypoints=websecure"
       - "traefik.http.routers.homeassistant-https.middlewares=mistborn_auth@file"
       - "traefik.http.routers.homeassistant-https.tls.certresolver=mistbornresolver"

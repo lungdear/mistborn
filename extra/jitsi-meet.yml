@@ -10,10 +10,10 @@ services:
             #- '${HTTPS_PORT}:443'
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.jitsi-http.rule=Host(`jitsi.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+            - "traefik.http.routers.jitsi-http.rule=Host(`jitsi.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
             - "traefik.http.routers.jitsi-http.entrypoints=web"
             - "traefik.http.routers.jitsi-http.middlewares=mistborn_auth@file"
-            - "traefik.http.routers.jitsi-https.rule=Host(`jitsi.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+            - "traefik.http.routers.jitsi-https.rule=Host(`jitsi.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
             - "traefik.http.routers.jitsi-https.entrypoints=websecure"
             - "traefik.http.routers.jitsi-https.middlewares=mistborn_auth@file"
             - "traefik.http.routers.jitsi-https.tls.certresolver=mistbornresolver"

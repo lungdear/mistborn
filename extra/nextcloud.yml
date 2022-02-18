@@ -23,10 +23,10 @@ services:
       - ../.envs/.production/.nextcloud-db
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nextcloud-http.rule=Host(`nextcloud.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.nextcloud-http.rule=Host(`nextcloud.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.nextcloud-http.entrypoints=web"
       - "traefik.http.routers.nextcloud-http.middlewares=mistborn_auth@file"
-      - "traefik.http.routers.nextcloud-https.rule=Host(`nextcloud.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.nextcloud-https.rule=Host(`nextcloud.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.nextcloud-https.entrypoints=websecure"
       - "traefik.http.routers.nextcloud-https.middlewares=mistborn_auth@file"
       - "traefik.http.routers.nextcloud-https.tls.certresolver=mistbornresolver"

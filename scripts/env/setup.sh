@@ -24,6 +24,10 @@ else
     echo "MISTBORN_BASE_DOMAIN=mistborn" | sudo tee -a ${VAR_FILE}
 fi
 
+# MISTBORN_ACCESS_RULE
+
+echo "MISTBORN_ACCESS_RULE=\"ClientIP(\`10.0.0.0/8\`, \`192.168.0.0/16\`, \`172.16.0.0/12\`, \`127.0.0.0/8\`)\"" | sudo tee -a ${VAR_FILE}
+
 # MISTBORN_DNS_BIND_IP
 
 MISTBORN_DNS_BIND_IP="10.2.3.1"

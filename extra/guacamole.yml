@@ -35,10 +35,10 @@ services:
     container_name: mistborn_production_guacamole
     labels:
     - "traefik.enable=true"
-    - "traefik.http.routers.guacamole-http.rule=Host(`guac.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+    - "traefik.http.routers.guacamole-http.rule=Host(`guac.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
     - "traefik.http.routers.guacamole-http.entrypoints=web"
     - "traefik.http.routers.guacamole-http.middlewares=mistborn_auth@file,add-guacamole"
-    - "traefik.http.routers.guacamole-https.rule=Host(`guac.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+    - "traefik.http.routers.guacamole-https.rule=Host(`guac.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
     - "traefik.http.routers.guacamole-https.entrypoints=websecure"
     - "traefik.http.routers.guacamole-https.middlewares=mistborn_auth@file,add-guacamole"
     - "traefik.http.routers.guacamole-https.tls.certresolver=mistbornresolver"

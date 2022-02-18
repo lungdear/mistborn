@@ -16,10 +16,10 @@ services:
       - "${MISTBORN_DNS_BIND_IP}:5000:5000/tcp" # auth access
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django-http.rule=Host(`${MISTBORN_BASE_DOMAIN}`,`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.django-http.rule=Host(`${MISTBORN_BASE_DOMAIN}`,`home.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.django-http.entrypoints=web"
       - "traefik.http.routers.django-http.middlewares=mistborn_headers@file"
-      - "traefik.http.routers.django-https.rule=Host(`${MISTBORN_BASE_DOMAIN}`,`home.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.django-https.rule=Host(`${MISTBORN_BASE_DOMAIN}`,`home.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.django-https.entrypoints=websecure"
       - "traefik.http.routers.django-https.middlewares=mistborn_headers@file"
       - "traefik.http.routers.django-https.tls.certresolver=mistbornresolver"
@@ -91,11 +91,11 @@ services:
       - --certificatesresolvers.mistbornresolver.acme.httpchallenge.entrypoint=web
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.cockpit-http.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.cockpit-http.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.cockpit-http.entrypoints=web"
       - "traefik.http.routers.cockpit-http.middlewares=mistborn_headers@file"
       - "traefik.http.routers.cockpit-http.service=cockpit"
-      - "traefik.http.routers.cockpit-https.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.cockpit-https.rule=Host(`cockpit.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.cockpit-https.entrypoints=websecure"
       - "traefik.http.routers.cockpit-https.middlewares=mistborn_headers@file"
       - "traefik.http.routers.cockpit-https.service=cockpit"
@@ -219,10 +219,10 @@ services:
      - "${MISTBORN_DNS_BIND_IP}:53:53/udp"
    labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.pihole-http.rule=Host(`pihole.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.pihole-http.rule=Host(`pihole.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.pihole-http.entrypoints=web"
       - "traefik.http.routers.pihole-http.middlewares=mistborn_auth@file,add-pihole-admin"
-      - "traefik.http.routers.pihole-https.rule=Host(`pihole.${MISTBORN_BASE_DOMAIN}`) && ClientIP(`10.0.0.0/8`, `192.168.0.0/16`, `172.16.0.0/12`, `127.0.0.0/8`)"
+      - "traefik.http.routers.pihole-https.rule=Host(`pihole.${MISTBORN_BASE_DOMAIN}`) && ${MISTBORN_ACCESS_RULE}"
       - "traefik.http.routers.pihole-https.entrypoints=websecure"
       - "traefik.http.routers.pihole-https.middlewares=mistborn_auth@file,add-pihole-admin"
       - "traefik.http.routers.pihole-https.tls.certresolver=mistbornresolver"
