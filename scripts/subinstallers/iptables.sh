@@ -29,6 +29,7 @@ sudo iptables -X MISTBORN_WIREGUARD_FORWARD 2>/dev/null || true
 sudo iptables -X MISTBORN_WIREGUARD_OUTPUT 2>/dev/null || true
 sudo iptables -X MISTBORN_DOCKER_OUTPUT 2>/dev/null || true
 sudo iptables -X MISTBORN_DOCKER_INPUT 2>/dev/null || true
+sudo iptables -X MISTBORN_SERVICES_INPUT 2>/dev/null || true
 
 # iptables: log and drop chain
 sudo iptables -N MISTBORN_LOG_DROP
@@ -53,12 +54,19 @@ if [ ! -z "${SSH_CLIENT}" ]; then
     sudo iptables -A INPUT -p tcp -s $SSH_SRC --dport $SSH_PRT -j ACCEPT
 fi
 
+# service input rules
+sudo iptables -N MISTBORN_SERVICES_INPUT
+
+echo "Setting services iptables rules..."
+source ./scripts/subinstallers/firewall/letsencrypt.sh "MISTBORN_SERVICES_INPUT"
+
 # docker rules
 sudo iptables -N MISTBORN_DOCKER_INPUT
 sudo iptables -A MISTBORN_DOCKER_INPUT -i br-+ -j ACCEPT
 #sudo iptables -A MISTBORN_DOCKER_INPUT -i docker0 -j ACCEPT
 
 # last rules
+sudo iptables -A INPUT -j MISTBORN_SERVICES_INPUT
 sudo iptables -A INPUT -j MISTBORN_DOCKER_INPUT
 sudo iptables -A INPUT -j MISTBORN_WIREGUARD_INPUT
 sudo iptables -A INPUT -j MISTBORN_LOG_DROP
