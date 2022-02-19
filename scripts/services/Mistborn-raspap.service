@@ -6,7 +6,7 @@ After=Mistborn-base.service
 [Service]
 Restart=always
 RestartSec=15
-User=root
+User=mistborn
 Group=docker
 PermissionsStartOnly=true
 ExecStartPre=/sbin/iptables -I DOCKER-USER -i DIFACE -p tcp --dport 8095 -j MISTBORN_LOG_DROP

@@ -8,7 +8,7 @@ PartOf=Mistborn-base.service
 Restart=always
 RestartSec=15
 TimeoutStartSec=300
-User=root
+User=mistborn
 Group=docker
 PermissionsStartOnly=true
 # Shutdown container (if running) when unit is stopped
