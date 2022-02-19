@@ -26,22 +26,21 @@ else
     echo "MISTBORN_BASE_DOMAIN=mistborn" | sudo tee -a ${VAR_FILE}
 fi
 
-# MISTBORN_ACCESS_RULE
-
-echo "MISTBORN_ACCESS_RULE=\"ClientIP(\`10.0.0.0/8\`, \`192.168.0.0/16\`, \`172.16.0.0/12\`, \`127.0.0.0/8\`)\"" | sudo tee -a ${VAR_FILE}
-
-# MISTBORN_DNS_BIND_IP
-
-MISTBORN_DNS_BIND_IP="${MISTBORN_INTERNAL_IP:-10.3.3.1}"
-#if [ "$DISTRO" == "ubuntu" ] && [ "$VERSION_ID" == "20.04" ]; then
-#    MISTBORN_DNS_BIND_IP="10.2.3.1"
-#fi
-
-echo "MISTBORN_DNS_BIND_IP=${MISTBORN_DNS_BIND_IP}" | sudo tee -a ${VAR_FILE}
-
 # MISTBORN_BIND_IP
+# MISTBORN_DNS_BIND_IP
+if [[ -f "$DJANGO_PROD_FILE" ]] && grep -q -wi "MISTBORN_BIND_IP" "${DJANGO_PROD_FILE}" ; then
 
-echo "MISTBORN_BIND_IP=${MISTBORN_INTERNAL_IP:-10.3.3.1}" | sudo tee -a ${VAR_FILE}
+    MISTBORN_BIND_IP=$(grep -e "MISTBORN_BIND_IP=.*" ${DJANGO_PROD_FILE} | awk -F"=" '{print $2}')
+    echo "MISTBORN_BIND_IP=${MISTBORN_BIND_IP}" | sudo tee -a ${VAR_FILE}
+    echo "MISTBORN_DNS_BIND_IP=${MISTBORN_BIND_IP}" | sudo tee -a ${VAR_FILE}
+
+else
+    echo "MISTBORN_BIND_IP=10.2.3.1" | sudo tee -a ${VAR_FILE}
+    echo "MISTBORN_DNS_BIND_IP=10.2.3.1" | sudo tee -a ${VAR_FILE}
+fi
+
+# MISTBORN_ACCESS_RULE
+echo "MISTBORN_ACCESS_RULE=\"ClientIP(\`10.0.0.0/8\`, \`192.168.0.0/16\`, \`172.16.0.0/12\`, \`127.0.0.0/8\`)\"" | sudo tee -a ${VAR_FILE}
 
 # MISTBORN_TAG
 
