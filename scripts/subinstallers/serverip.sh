@@ -39,9 +39,9 @@ done
 >&2 echo "Valid IP address!"
 
 
-# add to bashrc
-sed -i "s/MISTBORN_INTERNAL_IP.*//" ~/.bashrc
-echo "MISTBORN_INTERNAL_IP=${MISTBORN_INTERNAL_IP}" | tee -a ~/.bashrc
+## add to bashrc
+#sed -i "s/MISTBORN_INTERNAL_IP.*//" ~/.bashrc
+#echo "MISTBORN_INTERNAL_IP=${MISTBORN_INTERNAL_IP}" | tee -a ~/.bashrc
 
 export MISTBORN_INTERNAL_IP=${MISTBORN_INTERNAL_IP}
 
