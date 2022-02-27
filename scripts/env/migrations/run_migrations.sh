@@ -24,7 +24,7 @@ mistborn_add2file() {
     elif grep -q -e "${preceding_string}" "${target_filename}"; then
 
         # add after given line
-        sudo sed -i "/.*${preceding_string}.*/a ${target_string}" "${target_filename}"
+        sudo sed -i "s/.*${preceding_string}.*/a ${target_string}" "${target_filename}"
 
     else
         # add to bottom of file

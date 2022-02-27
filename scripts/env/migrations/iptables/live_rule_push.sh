@@ -23,7 +23,7 @@ if [ "${target_filename}" == "/etc/iptables/rules.v4" ]; then
     elif grep -q -e "${preceding_string}" "${TMP_FILE}"; then
 
         # after
-        sed -i "/.*${preceding_string}.*/a ${target_string}" "${TMP_FILE}"
+        sed -i "s/.*${preceding_string}.*/a ${target_string}" "${TMP_FILE}"
 
     else
         # bottom
