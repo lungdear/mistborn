@@ -42,6 +42,12 @@ mistborn_readfile() {
             exit 1;
         fi
 
+        if [ ! -f "${target_filename}" ]; then
+            echo "file does not exist: ${target_filename}"
+            exec 5<&-
+            exit 1;
+        fi
+
         echo "TARGET FILENAME: ${target_filename}"
         echo "TEST STRING: ${test_string}"
         echo "PRECEDING STRING: ${preceding_string}"
