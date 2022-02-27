@@ -8,9 +8,9 @@ mistborn_add2file() {
 
     # default add to bottom of file
 
-    if grep -q "${preceding_string}" "${target_filename}"; then
+    if grep -q -e "${preceding_string}" "${target_filename}"; then
 
-        sudo sed -i "s/${preceding_string}/a ${target_string}" "${target_filename}"
+        sudo sed -i "/${preceding_string}/a ${target_string}" "${target_filename}"
 
     else
         # add to bottom of file
@@ -42,7 +42,7 @@ mistborn_readfile() {
         echo "PRECEDING STRING: ${preceding_string}"
         echo "TARGET STRING: ${target_string}"
 
-        if grep -q "${test_string}" "${target_filename}"; then
+        if grep -q -e "${test_string}" "${target_filename}"; then
 
             echo "${test_string} already in ${target_filename}"
         
@@ -76,7 +76,7 @@ mistborn_migrations() {
 
 
 # run migrations for all containing folders
-for folder in $(find . -maxdepth 1 -type d -not -name ".")
+for folder in $(find $(dirname "$0")/* -maxdepth 1 -type d -not -name ".")
 do
     mistborn_migrations "$folder"
 done
