@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 folder="$1" 
 target_filename="$2" 
 preceding_string="$3" 
