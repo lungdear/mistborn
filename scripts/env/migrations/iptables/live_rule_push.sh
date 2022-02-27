@@ -9,22 +9,26 @@ TMP_FILE="$(mktemp)"
 
 echo "submigrations: live rule push"
 
-sudo iptables-save > ${TMP_FILE}
+if [ "${target_filename}" == "/etc/iptables/rules.v4" ]; then
 
-if [ "${preceding_string}" == "MISTBORN_TOP_OF_FILE" ]; then
+    sudo iptables-save > ${TMP_FILE}
 
-    # top
-    sed -i "1s/^/${target_string}\n/" "${TMP_FILE}"
+    if [ "${preceding_string}" == "MISTBORN_TOP_OF_FILE" ]; then
 
-elif grep -q -e "${preceding_string}" "${TMP_FILE}"; then
+        # top
+        sed -i "1s/^/${target_string}\n/" "${TMP_FILE}"
 
-    # after
-    sed -i "/${preceding_string}/a ${target_string}" "${TMP_FILE}"
+    elif grep -q -e "${preceding_string}" "${TMP_FILE}"; then
 
-else
-    # bottom
-    echo ${target_string} >> ${TMP_FILE}
+        # after
+        sed -i "/*${preceding_string}*/a ${target_string}" "${TMP_FILE}"
+
+    else
+        # bottom
+        echo ${target_string} >> ${TMP_FILE}
+    fi
+
+    sudo iptables-restore < ${TMP_FILE}
+    rm -f ${TMP_FILE}
+
 fi
-
-sudo iptables-restore < ${TMP_FILE}
-rm -f ${TMP_FILE}
