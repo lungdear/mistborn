@@ -3,3 +3,8 @@
 -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
 -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p tcp -m tcp --dport 22 -j ACCEPT
+###
+/etc/iptables/rules.v4
+--dport 44
+MISTBORN_TOP_OF_FILE
+-A INPUT -p tcp -m tcp --dport 44 -j ACCEPT

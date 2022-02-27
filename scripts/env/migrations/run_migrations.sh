@@ -6,6 +6,11 @@ mistborn_add2file() {
     preceding_string="$2"
     target_string="$3"
 
+    if [ "${preceding_string}" == "MISTBORN_TOP_OF_FILE" ]; then
+        # put at the top of the file
+        sudo sed -i "1s/^/${target_string}\n/" "${target_filename}"
+    fi
+
     # default add to bottom of file
 
     if grep -q -e "${preceding_string}" "${target_filename}"; then
