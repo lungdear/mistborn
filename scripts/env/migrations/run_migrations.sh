@@ -1,15 +1,25 @@
 #!/bin/bash
 
+mistborn_callsubmigrations() {
+    folder="$1"
+
+    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.sh")
+    do
+        $filename "$@"
+    done
+
+}
+
 mistborn_add2file() {
 
-    target_filename="$1"
-    preceding_string="$2"
-    target_string="$3"
+    folder="$1"
+    target_filename="$2"
+    preceding_string="$3"
+    target_string="$4"
 
     if [ "${preceding_string}" == "MISTBORN_TOP_OF_FILE" ]; then
         # put at the top of the file
         sudo sed -i "1s/^/${target_string}\n/" "${target_filename}"
-    
 
     # default add to bottom of file
     elif grep -q -e "${preceding_string}" "${target_filename}"; then
@@ -22,10 +32,13 @@ mistborn_add2file() {
         echo ${target_string} | sudo tee -a ${target_filename}
     fi
 
+    mistborn_callsubmigrations "${folder}" "${target_filename}" "${preceding_string}" "${target_string}"
+
 }
 
 mistborn_readfile() {
-    filename="$1"
+    folder="$1"
+    filename="$2"
 
     # create file handle
     exec 5< ${filename}
@@ -62,7 +75,7 @@ mistborn_readfile() {
             echo "${test_string} not in ${target_filename}"
             echo "adding ${target_string}"
 
-            mistborn_add2file "${target_filename}" "${preceding_string}" "${target_string}"
+            mistborn_add2file "${folder}" "${target_filename}" "${preceding_string}" "${target_string}"
         fi
     
     done
@@ -77,10 +90,10 @@ mistborn_migrations() {
 
     echo "Folder name: ${folder}"
 
-    for filename in $(find ${folder} -maxdepth 1 -type f)
+    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.txt")
     do
         echo "file: ${filename}"
-        mistborn_readfile "$filename"
+        mistborn_readfile "$folder" "$filename"
     done
 
 }
