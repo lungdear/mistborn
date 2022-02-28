@@ -25,10 +25,10 @@ if [ "${target_filename}" == "/etc/iptables/rules.v4" ]; then
 
         if [ "${action}" == "insert" ]; then
             # before
-            sed -i "s/.*${preceding_string}.*/i ${target_string}/" "${TMP_FILE}"
+            sed -i "/.*${preceding_string}.*/i ${target_string}/" "${TMP_FILE}"
         elif [ "${action}" == "add" ]; then
             # after
-            sed -i "s/.*${preceding_string}.*/a ${target_string}/" "${TMP_FILE}"
+            sed -i "/.*${preceding_string}.*/a ${target_string}/" "${TMP_FILE}"
         else
             echo "Unrecognized action: ${action}"
         fi

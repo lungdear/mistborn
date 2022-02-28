@@ -7,7 +7,7 @@ AUG_ACTIONS=("add" "insert")
 mistborn_callsubmigrations() {
     folder="$1"
 
-    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.sh")
+    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.sh" -exec cat {} \; | sort)
     do
         $filename "$@"
     done
@@ -19,7 +19,7 @@ mistborn_delFromFile() {
     target_filename="$2"
     test_string="$3"
 
-    sudo sed -i "s/.*${test_string}.*/d" "${target_filename}"
+    sudo sed -i "/.*${test_string}.*/d" "${target_filename}"
 }
 
 mistborn_add2file() {
@@ -39,11 +39,11 @@ mistborn_add2file() {
 
         if [ "${action}" == "insert" ]; then
             # insert before given line
-            sudo sed -i "s/.*${preceding_string}.*/i ${target_string}/" "${target_filename}"
+            sudo sed -i "/.*${preceding_string}.*/i ${target_string}/" "${target_filename}"
 
         elif [ "${action}" == "add" ]; then
             # add after given line
-            sudo sed -i "s/.*${preceding_string}.*/a ${target_string}/" "${target_filename}"
+            sudo sed -i "/.*${preceding_string}.*/a ${target_string}/" "${target_filename}"
         else
             echo "Unrecognized action: ${action}"
         fi
@@ -132,7 +132,7 @@ mistborn_migrations() {
 
 
 # run migrations for all containing folders
-for folder in $(find $(dirname "$0")/* -maxdepth 1 -type d -not -name ".")
+for folder in $(find $(dirname "$0")/* -maxdepth 1 -type d -not -name "." -exec cat {} \; | sort)
 do
     mistborn_migrations "$folder"
 done
