@@ -1,5 +1,9 @@
 #!/bin/bash
 
+AUG_ACTIONS=("add" "insert")
+# add: put line after match
+# insert: put line before match
+
 mistborn_callsubmigrations() {
     folder="$1"
 
@@ -10,12 +14,21 @@ mistborn_callsubmigrations() {
 
 }
 
+mistborn_delFromFile() {
+    folder="$1" #unused
+    target_filename="$2"
+    test_string="$3"
+
+    sudo sed -i "s/.*${test_string}.*/d" "${target_filename}"
+}
+
 mistborn_add2file() {
 
     folder="$1"
-    target_filename="$2"
-    preceding_string="$3"
-    target_string="$4"
+    action="$2"
+    target_filename="$3"
+    preceding_string="$4"
+    target_string="$5"
 
     if [ "${preceding_string}" == "MISTBORN_TOP_OF_FILE" ]; then
         # put at the top of the file
@@ -23,15 +36,24 @@ mistborn_add2file() {
 
     elif grep -q -e "${preceding_string}" "${target_filename}"; then
 
-        # add after given line
-        sudo sed -i "s/.*${preceding_string}.*/&\n${target_string}/" "${target_filename}"
+
+        if [ "${action}" == "insert" ]; then
+            # insert before given line
+            sudo sed -i "s/.*${preceding_string}.*/i ${target_string}/" "${target_filename}"
+
+        elif [ "${action}" == "add" ]; then
+            # add after given line
+            sudo sed -i "s/.*${preceding_string}.*/a ${target_string}/" "${target_filename}"
+        else
+            echo "Unrecognized action: ${action}"
+        fi
 
     else
         # add to bottom of file
         echo ${target_string} | sudo tee -a ${target_filename}
     fi
 
-    mistborn_callsubmigrations "${folder}" "${target_filename}" "${preceding_string}" "${target_string}"
+    mistborn_callsubmigrations "${folder}" "${action}" "${target_filename}" "${preceding_string}" "${target_string}"
 
 }
 
@@ -43,6 +65,7 @@ mistborn_readfile() {
     exec 5< ${filename}
 
     while read delimiter <&5 ; do
+        read action <&5
         read target_filename <&5
         read test_string <&5
         read preceding_string <&5
@@ -65,16 +88,26 @@ mistborn_readfile() {
         echo "PRECEDING STRING: ${preceding_string}"
         echo "TARGET STRING: ${target_string}"
 
-        if grep -q -e "${test_string}" "${target_filename}"; then
-
-            echo "${test_string} already in ${target_filename}"
         
+        if [ "${action}" == "delete" ]; then
+
+            mistborn_delFromFile "${folder}" "${target_filename}" "${test_string}"
+
+        elif [[ " ${AUG_ACTIONS[*]} " =~ "${action}" ]]; then
+
+            if grep -q -e "${test_string}" "${target_filename}"; then
+
+                echo "${test_string} already in ${target_filename}"
+            
+            else
+
+                echo "${test_string} not in ${target_filename}"
+                echo "adding ${target_string}"
+
+                mistborn_add2file "${folder}" "${action}" "${target_filename}" "${preceding_string}" "${target_string}"
+            fi
         else
-
-            echo "${test_string} not in ${target_filename}"
-            echo "adding ${target_string}"
-
-            mistborn_add2file "${folder}" "${target_filename}" "${preceding_string}" "${target_string}"
+            echo "No matching action found."
         fi
     
     done
