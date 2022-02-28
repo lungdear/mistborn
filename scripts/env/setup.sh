@@ -5,8 +5,11 @@
 VAR_FILE=/opt/mistborn/.env
 DJANGO_PROD_FILE=/opt/mistborn/.envs/.production/.django
 
-# load env variables
+# run migrations
+/opt/mistborn/scripts/env/migrations/run_migrations.sh
 
+
+# load env variables
 source /opt/mistborn/scripts/subinstallers/platform.sh
 
 # setup env file
