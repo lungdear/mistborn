@@ -7,7 +7,7 @@ AUG_ACTIONS=("add" "insert")
 mistborn_callsubmigrations() {
     folder="$1"
 
-    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.sh" -exec cat {} \; | sort)
+    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.sh" | sort)
     do
         $filename "$@"
     done
@@ -122,7 +122,7 @@ mistborn_migrations() {
 
     echo "Folder name: ${folder}"
 
-    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.txt")
+    for filename in $(find ${folder} -maxdepth 1 -type f -name "*.txt" | sort)
     do
         echo "file: ${filename}"
         mistborn_readfile "$folder" "$filename"
@@ -132,7 +132,7 @@ mistborn_migrations() {
 
 
 # run migrations for all containing folders
-for folder in $(find $(dirname "$0")/* -maxdepth 1 -type d -not -name "." -exec cat {} \; | sort)
+for folder in $(find $(dirname "$0")/* -maxdepth 1 -type d -not -name "." | sort)
 do
     mistborn_migrations "$folder"
 done
