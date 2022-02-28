@@ -39,11 +39,11 @@ mistborn_add2file() {
 
         if [ "${action}" == "insert" ]; then
             # insert before given line
-            sudo sed -i "/.*${preceding_string}.*/i ${target_string}/" "${target_filename}"
+            sudo sed -i "/.*${preceding_string}.*/i ${target_string}" "${target_filename}"
 
         elif [ "${action}" == "add" ]; then
             # add after given line
-            sudo sed -i "/.*${preceding_string}.*/a ${target_string}/" "${target_filename}"
+            sudo sed -i "/.*${preceding_string}.*/a ${target_string}" "${target_filename}"
         else
             echo "Unrecognized action: ${action}"
         fi
