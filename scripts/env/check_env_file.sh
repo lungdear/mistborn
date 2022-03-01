@@ -10,7 +10,7 @@ export SERVICE_ENV_FILE="${MISTBORN_HOME}/.envs/.production/.${SERVICE}"
 
 # read in global variables
 set -a
-source ${MISTBORN_HOME}/.env
+#source ${MISTBORN_HOME}/.env
 source ${MISTBORN_HOME}/.envs/.production/.django
 source ${MISTBORN_HOME}/.envs/.production/.postgres
 source ${MISTBORN_HOME}/.envs/.production/.pihole

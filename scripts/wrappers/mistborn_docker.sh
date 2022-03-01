@@ -10,6 +10,8 @@ if ! [ -x "$(command -v pwgen)" ]; then
     sudo apt-get install -y pwgen
 fi
 
+echo "Mistborn service wrapper: Starting...."
+
 SERVICES="$1"
 shift
 
@@ -25,12 +27,12 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
     # read in variables
     set -a
     #source ${MISTBORN_HOME}/.env
-    export $(cat ${MISTBORN_HOME}/.env | grep -v "\`" | grep -v "^#")
+    export $(cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
 
     if [[ -f "${MISTBORN_SERVICE_FILE}" ]]; then
         echo "Loading service variables"
         #source ${MISTBORN_SERVICE_FILE}
-        export $(cat ${MISTBORN_SERVICE_FILE} | grep -v "\`" | grep -v "^#")
+        export $(cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
     else
         echo "No service variables to load. Proceeding."
     fi
