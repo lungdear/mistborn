@@ -2,15 +2,14 @@
 
 ENV_FILE=/opt/mistborn/.env
 
+set -o allexport
+source ${ENV_FILE}
+set +o allexport
+
 # check that curl exists
 if ! [ -x "$(command -v curl)" ]; then
     echo "Installing curl"
     sudo apt-get install -y curl
-fi
-
-
-if [ -f "${ENV_FILE}" ]; then
-    export $(cat ${ENV_FILE} | xargs)
 fi
 
 HTTPD="000"
