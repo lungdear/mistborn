@@ -2,9 +2,7 @@
 
 ENV_FILE=/opt/mistborn/.env
 
-set -o allexport
-source ${ENV_FILE}
-set +o allexport
+export $(grep 'MISTBORN_BASE_DOMAIN' ${ENV_FILE} | xargs)
 
 # check that curl exists
 if ! [ -x "$(command -v curl)" ]; then
