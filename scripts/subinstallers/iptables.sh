@@ -54,19 +54,12 @@ if [ ! -z "${SSH_CLIENT}" ]; then
     sudo iptables -A INPUT -p tcp -s $SSH_SRC --dport $SSH_PRT -j ACCEPT
 fi
 
-# service input rules
-sudo iptables -N MISTBORN_SERVICES_INPUT
-
-echo "Setting services iptables rules..."
-source ./scripts/subinstallers/firewall/letsencrypt.sh "MISTBORN_SERVICES_INPUT"
-
 # docker rules
 sudo iptables -N MISTBORN_DOCKER_INPUT
 sudo iptables -A MISTBORN_DOCKER_INPUT -i br-+ -j ACCEPT
 #sudo iptables -A MISTBORN_DOCKER_INPUT -i docker0 -j ACCEPT
 
 # last rules
-sudo iptables -A INPUT -j MISTBORN_SERVICES_INPUT
 sudo iptables -A INPUT -j MISTBORN_DOCKER_INPUT
 sudo iptables -A INPUT -j MISTBORN_WIREGUARD_INPUT
 sudo iptables -A INPUT -j MISTBORN_LOG_DROP
