@@ -52,7 +52,7 @@ fi
 # ensure base is up and listening
 echo "Checking that Mistborn-base has finished starting up..."
 
-while ! nc -z 10.2.3.1 5000; do
+while ! nc -z ${MISTBORN_BIND_IP} 5000; do
     WAIT_TIME=$((5 + $RANDOM % 15))
     echo "Waiting ${WAIT_TIME} seconds for Mistborn-base..."
     sleep ${WAIT_TIME}
