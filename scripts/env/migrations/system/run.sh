@@ -1,6 +1,6 @@
 #!/bin/bash
 
-binaries=("pwgen", "curl")
+binaries=("pwgen" "curl")
 
 for bin in "${binaries[@]}"
 do
