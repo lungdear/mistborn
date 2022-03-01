@@ -48,6 +48,8 @@ echo "address=/${MISTBORN_BASE_DOMAIN}/${MISTBORN_BIND_IP}" | sudo tee /opt/mist
 sudo sed -i "s/#name_servers.*/name_servers=${MISTBORN_BIND_IP}/" /etc/resolvconf.conf
 sudo sed -i "s/name_servers.*/name_servers=${MISTBORN_BIND_IP}/" /etc/resolvconf.conf
 
+# MISTBORN_ACCESS_RULE
+echo "MISTBORN_ACCESS_RULE=\"ClientIP(\`10.0.0.0/8\`, \`192.168.0.0/16\`, \`172.16.0.0/12\`, \`127.0.0.0/8\`)\"" | sudo tee -a ${VAR_FILE}
 
 # MISTBORN_TAG
 
