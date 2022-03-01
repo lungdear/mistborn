@@ -24,11 +24,13 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
 
     # read in variables
     set -a
-    source ${MISTBORN_HOME}/.env
+    #source ${MISTBORN_HOME}/.env
+    export $(cat ${MISTBORN_HOME}/.env | grep -v "\`" | grep -v "^#")
 
     if [[ -f "${MISTBORN_SERVICE_FILE}" ]]; then
         echo "Loading service variables"
-        source ${MISTBORN_SERVICE_FILE}
+        #source ${MISTBORN_SERVICE_FILE}
+        export $(cat ${MISTBORN_SERVICE_FILE} | grep -v "\`" | grep -v "^#")
     else
         echo "No service variables to load. Proceeding."
     fi
