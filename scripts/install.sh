@@ -226,8 +226,6 @@ sudo systemctl restart unattended-upgrades
 #    sudo sed -i '/.*systemd-resolved/d' /etc/systemd/system/Mistborn-base.service
 #fi
 
-sudo cp ./scripts/services/Mistborn-setup.service /etc/systemd/system/
-
 # setup local volumes for pihole
 sudo mkdir -p ../mistborn_volumes/
 sudo chown -R root:root ../mistborn_volumes/
@@ -243,7 +241,8 @@ source ./scripts/subinstallers/openssl.sh
 #sudo rm -rf ../mistborn_volumes/base/tls
 #sudo mv ./tls ../mistborn_volumes/base/
 
-# enable and run setup to generate .env
+# enable and run setup
+sudo cp ./scripts/services/Mistborn-setup.service /etc/systemd/system/
 sudo systemctl enable Mistborn-setup.service
 sudo systemctl start Mistborn-setup.service
 
@@ -271,20 +270,7 @@ sudo systemctl disable dnsmasq 2>/dev/null || true
 # hostname in /etc/hosts
 sudo grep -qF "$(hostname)" /etc/hosts && echo "$(hostname) already in /etc/hosts" || echo "127.0.1.1 $(hostname) $(hostname)" | sudo tee -a /etc/hosts
 
-# MISTBORN_INTERNAL_IP
-IP_INT="${MISTBORN_INTERNAL_IP:-10.2.3.1}"
-
-# resolve all *.mistborn domains
-echo "address=/.${MISTBORN_BASE_DOMAIN}/${IP_INT}" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
-echo "address=/${MISTBORN_BASE_DOMAIN}/${IP_INT}" | sudo tee ../mistborn_volumes/base/pihole/etc-dnsmasqd/02-lan.conf
-
-# ResolvConf (OpenResolv installed with Wireguard)
-#sudo sed -i "s/#name_servers.*/name_servers=$IPV4_PUBLIC/" /etc/resolvconf.conf
-sudo sed -i "s/#name_servers.*/name_servers=${IP_INT}/" /etc/resolvconf.conf
-sudo sed -i "s/name_servers.*/name_servers=${IP_INT}/" /etc/resolvconf.conf
-#sudo sed -i "s/#name_servers.*/name_servers=127.0.0.1/" /etc/resolvconf.conf
-sudo resolvconf -u 1>/dev/null 2>&1
-
+# backups
 echo "backup up original volumes folder"
 sudo mkdir -p ../mistborn_backup
 sudo chmod 700 ../mistborn_backup
