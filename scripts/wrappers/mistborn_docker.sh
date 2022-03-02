@@ -29,16 +29,19 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
     #source ${MISTBORN_HOME}/.env
     
     VAR_FILE="$(mktemp)"
-    cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | tee ${VAR_FILE}
+    cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" > ${VAR_FILE}
     . ${VAR_FILE}
+    rm ${VAR_FILE}
 
     if [[ -f "${MISTBORN_SERVICE_FILE}" ]]; then
         echo "Loading service variables"
         #source ${MISTBORN_SERVICE_FILE}
         
         VAR_FILE="$(mktemp)"
-        cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | tee ${VAR_FILE}
+        cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" > ${VAR_FILE}
         . ${VAR_FILE}
+        rm ${VAR_FILE}
+
     else
         echo "No service variables to load. Proceeding."
     fi
