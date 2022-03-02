@@ -12,14 +12,14 @@ Group=docker
 PermissionsStartOnly=true
 
 # Shutdown container (if running) when unit is stopped
-ExecStartPre=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi docker-compose -f /opt/mistborn/extra/jitsi-meet.yml down
+ExecStartPre=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi docker-compose --env-file /opt/mistborn/.env -f /opt/mistborn/extra/jitsi-meet.yml down
 ExecStartPre=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi /opt/mistborn/scripts/services/jitsi/iptables_up.sh
 
 # Start container when unit is started
-ExecStart=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi docker-compose -f /opt/mistborn/extra/jitsi-meet.yml up --build
+ExecStart=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi docker-compose --env-file /opt/mistborn/.env -f /opt/mistborn/extra/jitsi-meet.yml up --build
 
 # Stop container when unit is stopped
-ExecStop=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi docker-compose -f /opt/mistborn/extra/jitsi-meet.yml down
+ExecStop=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi docker-compose --env-file /opt/mistborn/.env -f /opt/mistborn/extra/jitsi-meet.yml down
 # Post stop
 ExecStopPost=-/opt/mistborn/scripts/wrappers/mistborn_docker.sh jitsi /opt/mistborn/scripts/services/jitsi/iptables_down.sh
 

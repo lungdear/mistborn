@@ -11,12 +11,12 @@ User=mistborn
 Group=docker
 PermissionsStartOnly=true
 # Shutdown container (if running) when unit is stopped
-ExecStartPre=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jellyfin docker-compose -f /opt/mistborn/extra/jellyfin.yml down
+ExecStartPre=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jellyfin docker-compose --env-file /opt/mistborn/.env -f /opt/mistborn/extra/jellyfin.yml down
 
 # Start container when unit is started
-ExecStart=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jellyfin docker-compose -f /opt/mistborn/extra/jellyfin.yml up --build
+ExecStart=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jellyfin docker-compose --env-file /opt/mistborn/.env -f /opt/mistborn/extra/jellyfin.yml up --build
 # Stop container when unit is stopped
-ExecStop=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jellyfin docker-compose -f /opt/mistborn/extra/jellyfin.yml down
+ExecStop=/opt/mistborn/scripts/wrappers/mistborn_docker.sh jellyfin docker-compose --env-file /opt/mistborn/.env -f /opt/mistborn/extra/jellyfin.yml down
 # Post stop
 
 [Install]
