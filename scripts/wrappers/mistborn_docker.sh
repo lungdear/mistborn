@@ -25,18 +25,27 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
     ${MISTBORN_HOME}/scripts/env/check_env_file.sh ${SERVICE}
 
     # read in variables
-    #set -a
+    set -a
     #source ${MISTBORN_HOME}/.env
-    export $(cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
+    #export $(cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
+
+    cat cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | while read line || [[ -n $line ]];
+    do
+        export $line
+    done
 
     if [[ -f "${MISTBORN_SERVICE_FILE}" ]]; then
         echo "Loading service variables"
         #source ${MISTBORN_SERVICE_FILE}
-        export $(cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
+        #export $(cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
+        cat cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | while read line || [[ -n $line ]];
+        do
+            export $line
+        done
     else
         echo "No service variables to load. Proceeding."
     fi
-    #set +a
+    set +a
 
     # init script
     if [[ -f "${MISTBORN_SERVICE_INIT}" ]]; then
