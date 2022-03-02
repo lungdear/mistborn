@@ -29,7 +29,7 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
     #source ${MISTBORN_HOME}/.env
     #export $(cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
 
-    cat cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | while read line || [[ -n $line ]];
+    cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | while read line || [[ -n $line ]];
     do
         export $line
     done
@@ -38,7 +38,7 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
         echo "Loading service variables"
         #source ${MISTBORN_SERVICE_FILE}
         #export $(cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
-        cat cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | while read line || [[ -n $line ]];
+        cat ${MISTBORN_SERVICE_FILE} | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | while read line || [[ -n $line ]];
         do
             export $line
         done
