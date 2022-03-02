@@ -25,7 +25,7 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
     ${MISTBORN_HOME}/scripts/env/check_env_file.sh ${SERVICE}
 
     # read in variables
-    set -a
+    #set -a
     #source ${MISTBORN_HOME}/.env
     export $(cat ${MISTBORN_HOME}/.env | egrep -v "(^[[:space:]]*#.*|^[[:space:]]*$|.*\`.*)" | xargs)
 
@@ -36,7 +36,7 @@ for SERVICE in "${SERVICES_ARRAY[@]}"; do
     else
         echo "No service variables to load. Proceeding."
     fi
-    set +a
+    #set +a
 
     # init script
     if [[ -f "${MISTBORN_SERVICE_INIT}" ]]; then
