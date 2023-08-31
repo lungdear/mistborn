@@ -12,7 +12,7 @@ cd /opt/mistborn
 tar -xzvf ../mistborn_backup/mistborn_volumes_backup.tar.gz -C ../
 git pull
 git submodule update --init
-sudo docker-compose -f base.yml build
+sudo docker compose -f base.yml build
 popd
 
 sudo systemctl start Mistborn-base

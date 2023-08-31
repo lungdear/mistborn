@@ -1,3 +1,9 @@
 {
-    "shutdown-timeout": 60 
+    "dns": ["10.2.3.1", "1.1.1.1"],
+    "shutdown-timeout": 60,
+    "debug": false,
+    "experimental": false,
+    "features": {
+        "buildkit": false
+    }
 }

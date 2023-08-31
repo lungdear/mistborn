@@ -18,12 +18,12 @@
     rule = "Host(`cockpit.mistborn`)"
     service = "cockpit"
     entrypoints = ["web"]
-    middlewares = ["mistborn_auth", "mistborn_headers", "https_redirect"]
+    middlewares = ["https_redirect"]
   [http.routers.https-cockpit]
     rule = "Host(`cockpit.mistborn`)"
     service = "cockpit"
     entrypoints = ["websecure"]
-    middlewares = ["mistborn_auth", "mistborn_headers"]
+    middlewares = ["tls_headers"]
     [http.routers.https-cockpit.tls]
       certresolver = "basic"
 
@@ -40,3 +40,6 @@
   [http.middlewares.https_redirect.redirectScheme]
     scheme = "https"
     permanent = true
+  
+  [http.middlewares.tls_headers.headers.customRequestHeaders]
+    X-Forwarded-Proto = "https"

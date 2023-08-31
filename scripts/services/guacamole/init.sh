@@ -7,7 +7,7 @@ fi
 
 mkdir -p /opt/mistborn_volumes/extra/guacamole/init/ >/dev/null 2>&1
 chmod -R +x /opt/mistborn_volumes/extra/guacamole/init/
-docker run --rm guacamole/guacamole /opt/guacamole/bin/initdb.sh --postgres > /opt/mistborn_volumes/extra/guacamole/init/initdb.sql
+docker run --rm guacamole/guacamole:1.3.0 /opt/guacamole/bin/initdb.sh --postgres > /opt/mistborn_volumes/extra/guacamole/init/initdb.sql
 
 # grab values in initdb.sql to replace
 HEXSTRINGS=($(egrep -o [0-9a-fA-F]{64} /opt/mistborn_volumes/extra/guacamole/init/initdb.sql))

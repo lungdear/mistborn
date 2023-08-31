@@ -4,6 +4,11 @@ set -e
 
 MISTBORN_HOME="/opt/mistborn"
 
+# ensure permissions are correct
+MISTBORN_DOCKER_FOLDER="/home/mistborn/.docker"
+sudo chown -R mistborn:mistborn $MISTBORN_DOCKER_FOLDER
+sudo chmod -R g+rwx $MISTBORN_DOCKER_FOLDER
+
 # check that pwgen exists
 if ! [ -x "$(command -v pwgen)" ]; then
     echo "Installing pwgen"

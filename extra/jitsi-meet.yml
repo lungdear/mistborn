@@ -3,7 +3,7 @@ version: '3'
 services:
     # Frontend
     jitsi-web:
-        image: jitsi/web:latest
+        image: jitsi/web:web-1.0.7507-1
         restart: unless-stopped
         #ports:
             #- '${HTTP_PORT}:80'
@@ -111,7 +111,7 @@ services:
 
     # XMPP server
     jitsi-prosody:
-        image: jitsi/prosody:latest
+        image: jitsi/prosody:prosody-0.12.3
         restart: unless-stopped
         expose:
             - '5222'
@@ -182,7 +182,7 @@ services:
 
     # Focus component
     jitsi-jicofo:
-        image: jitsi/jicofo:latest
+        image: jitsi/jicofo:jicofo-1.0-1048-1
         restart: unless-stopped
         volumes:
             - ${CONFIG}/jicofo:/config:Z
@@ -213,7 +213,7 @@ services:
 
     # Video bridge
     jitsi-jvb:
-        image: jitsi/jvb:latest
+        image: jitsi/jvb:jvb-2.3-41-ga8d8a786-1
         restart: unless-stopped
         ports:
             - "${MISTBORN_BIND_IP}:${JVB_PORT}:${JVB_PORT}/udp"

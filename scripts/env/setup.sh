@@ -1,5 +1,20 @@
 #!/bin/bash
 
+#### DOCKER
+
+MB_DOCKER_PATH=/usr/local/bin/docker
+if [ -f "$MB_DOCKER_PATH" ] || [ -L "$MB_DOCKER_PATH" ]; then
+    echo "MB Docker path defined"
+else
+    echo "Creating symbolic link to MB Docker path"
+    sudo ln -sf $(which docker) $MB_DOCKER_PATH
+fi
+
+if ! docker compose 2>/dev/null; then
+    echo "Docker Compose Plugin not found: aliasing docker-compose"
+    alias docker\ compose="/usr/local/bin/docker-compose"
+fi
+
 #### ENV file
 
 VAR_FILE=/opt/mistborn/.env

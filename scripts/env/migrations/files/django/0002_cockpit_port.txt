@@ -1,0 +1,6 @@
+###
+add
+/opt/mistborn/.envs/.production/.django
+COCKPIT_PORT
+MISTBORN_BOTTOM_OF_FILE
+COCKPIT_PORT=9090
