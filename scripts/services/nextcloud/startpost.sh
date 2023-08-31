@@ -22,5 +22,5 @@ done
 
 echo "Nextcloud is running! Setting config.php variables."
 
-docker-compose -f /opt/mistborn/extra/nextcloud.yml exec -T nextcloud su -p www-data -s /bin/sh -c "php /var/www/html/occ config:system:set verify_peer_off --value=true"
-docker-compose -f /opt/mistborn/extra/nextcloud.yml exec -T nextcloud su -p www-data -s /bin/sh -c "php /var/www/html/occ config:system:set allow_local_remote_servers --value=true"
+docker compose -f /opt/mistborn/extra/nextcloud.yml exec -T nextcloud su -p www-data -s /bin/sh -c "php /var/www/html/occ config:system:set verify_peer_off --value=true"
+docker compose -f /opt/mistborn/extra/nextcloud.yml exec -T nextcloud su -p www-data -s /bin/sh -c "php /var/www/html/occ config:system:set allow_local_remote_servers --value=true"

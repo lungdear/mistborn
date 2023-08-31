@@ -4,6 +4,9 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
+#IPV4_PUBLIC=$(ip -o -4 route show default | egrep -o 'dev [^ ]*' | awk '{print $2}' | xargs ip -4 addr show | grep 'inet ' | awk '{print $2}' | grep -o "^[0-9.]*"  | tr -cd '\11\12\15\40-\176' | head -1) # tail -1 to get last
+export IPV4_PUBLIC="10.2.3.1"
+
 # check that git exists
 if ! [ -x "$(command -v git)" ]; then
     echo "Installing git"
@@ -86,6 +89,7 @@ source ./scripts/subinstallers/passwd.sh
 
 # Install Cockpit?
 if [ -z "${MISTBORN_INSTALL_COCKPIT}" ]; then
+    #MISTBORN_INSTALL_COCKPIT=Y
     read -p "Install Cockpit (a somewhat resource-heavy system management graphical user interface -- NOT RECOMMENDED on Raspberry Pi)? [y/N]: " MISTBORN_INSTALL_COCKPIT
     echo
     MISTBORN_INSTALL_COCKPIT=${MISTBORN_INSTALL_COCKPIT:-N}
@@ -194,13 +198,14 @@ fi
 
 # Mistborn-cli (pip3 installed by docker)
 figlet "Mistborn: Installing mistborn-cli"
-sudo pip3 install -e ./modules/mistborn-cli
+#sudo -E apt-get install -y pipx
+#pipx ensurepath
+#pipx install -e ./modules/mistborn-cli
+sudo pip3 install -e ./modules/mistborn-cli 2>/dev/null || \
+    sudo pip3 install -e ./modules/mistborn-cli --break-system-packages
 
 # Mistborn
 # final setup vars
-
-#IPV4_PUBLIC=$(ip -o -4 route show default | egrep -o 'dev [^ ]*' | awk '{print $2}' | xargs ip -4 addr show | grep 'inet ' | awk '{print $2}' | grep -o "^[0-9.]*"  | tr -cd '\11\12\15\40-\176' | head -1) # tail -1 to get last
-IPV4_PUBLIC="10.2.3.1"
 
 
 # generate production .env file
@@ -244,8 +249,8 @@ sudo systemctl enable Mistborn-setup.service
 sudo systemctl start Mistborn-setup.service
 
 # Download docker images while DNS is operable
-sudo docker-compose -f base.yml pull || true
-sudo docker-compose -f base.yml build
+sg docker -c "docker compose -f base.yml pull || true"
+sg docker -c "docker compose -f base.yml build"
 
 ## disable systemd-resolved stub listener (creates symbolic link to /etc/resolv.conf)
 if [ -f /etc/systemd/resolved.conf ]; then
@@ -276,7 +281,7 @@ sudo tar -czf ../mistborn_backup/mistborn_volumes_backup.tar.gz ../mistborn_volu
 # clean docker
 echo "cleaning old docker volumes"
 sudo systemctl stop Mistborn-base || true
-sudo docker-compose -f /opt/mistborn/base.yml kill
+sudo docker compose -f /opt/mistborn/base.yml kill
 sudo docker volume rm -f mistborn_production_postgres_data 2>/dev/null || true
 sudo docker volume rm -f mistborn_production_postgres_data_backups 2>/dev/null || true
 sudo docker volume rm -f mistborn_production_traefik 2>/dev/null || true

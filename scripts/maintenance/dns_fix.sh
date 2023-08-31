@@ -28,8 +28,8 @@ sudo iptables -F OUTPUT
 sudo systemctl restart systemd-resolved
 
 # pull images
-sudo docker-compose -f /opt/mistborn/base.yml --env-file /opt/mistborn/.env pull
-sudo docker-compose -f /opt/mistborn/base.yml --env-file /opt/mistborn/.env build
+sudo docker compose -f /opt/mistborn/base.yml --env-file /opt/mistborn/.env pull
+sudo docker compose -f /opt/mistborn/base.yml --env-file /opt/mistborn/.env build
 
 # stop temporary DNS
 sudo systemctl stop systemd-resolved

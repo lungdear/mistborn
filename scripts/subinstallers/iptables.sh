@@ -144,6 +144,9 @@ sudo grep -i "vm.overcommit_memory" /etc/sysctl.conf && sudo sed -i 's/.*vm.over
 sudo sysctl -p /etc/sysctl.conf
 
 # rsyslog to create /var/log/iptables.log
+if ! systemctl status rsyslog 2>/dev/null; then
+    sudo -E apt-get install -y rsyslog
+fi
 sudo cp ./scripts/conf/15-iptables.conf /etc/rsyslog.d/
 sudo chown root:root /etc/rsyslog.d/15-iptables.conf
 sudo systemctl restart rsyslog

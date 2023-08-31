@@ -86,14 +86,14 @@ pushd .
 cd /opt/mistborn
 
 # ensure group exists
-sudo docker-compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/agent_groups -a -g suricata -q 2>/dev/null
+sudo docker compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/agent_groups -a -g suricata -q 2>/dev/null
 
 # add this host to group
-WAZUH_ID=$(sudo docker-compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/manage_agents -l | egrep ^\ *ID | grep $(hostname) | awk '{print $2}' | tr -d ',')
-sudo docker-compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/agent_groups -a -i ${WAZUH_ID} -g suricata -q
+WAZUH_ID=$(sudo docker compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/manage_agents -l | egrep ^\ *ID | grep $(hostname) | awk '{print $2}' | tr -d ',')
+sudo docker compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh /var/ossec/bin/agent_groups -a -i ${WAZUH_ID} -g suricata -q
 
 # write agent.conf
-sudo docker-compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh bash -c "cat > /var/ossec/etc/shared/suricata/agent.conf << EOF
+sudo docker compose --env-file /opt/mistborn/.env -f extra/wazuh.yml exec -T wazuh bash -c "cat > /var/ossec/etc/shared/suricata/agent.conf << EOF
 <agent_config>
     <localfile>
         <log_format>json</log_format>
@@ -104,7 +104,7 @@ EOF
 "
 
 # restart manager
-sudo docker-compose --env-file /opt/mistborn/.env -f extra/wazuh.yml restart wazuh
+sudo docker compose --env-file /opt/mistborn/.env -f extra/wazuh.yml restart wazuh
 
 popd
 

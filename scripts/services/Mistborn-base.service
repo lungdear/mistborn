@@ -18,9 +18,9 @@ EnvironmentFile=/opt/mistborn/.env
 ExecStartPre=-/usr/bin/bash -c "docker container stop $(docker network inspect mistborn_default | grep Name | tail -n +2 | cut -d':' -f2 | tr -d ',\"') 2>/dev/null"
 
 # bring down the base service
-ExecStartPre=/usr/local/bin/docker-compose -f /opt/mistborn/base.yml down
+ExecStartPre=/usr/local/bin/docker compose -f /opt/mistborn/base.yml down
 
-ExecStartPre=/usr/local/bin/docker-compose -f /opt/mistborn/base.yml build
+ExecStartPre=-/usr/local/bin/docker compose -f /opt/mistborn/base.yml build
 ExecStartPre=-/sbin/ip address add 10.2.3.1/30 dev DIFACE
 ExecStartPre=/sbin/iptables -w -I DOCKER-USER -i DIFACE -p udp --dport 53 -j MISTBORN_LOG_DROP
 ExecStartPre=/sbin/iptables -w -I DOCKER-USER -i DIFACE -p tcp --dport 53 -j MISTBORN_LOG_DROP
@@ -31,9 +31,9 @@ ExecStartPre=/sbin/iptables -w -A OUTPUT -o DIFACE -p udp --dport 53 -j MISTBORN
 ExecStartPre=/sbin/ip6tables -w -A OUTPUT -p udp --dport 53 -j MISTBORN_LOG_DROP
 ExecStartPre=/sbin/resolvconf -u
 # Start container when unit is started
-ExecStart=/usr/local/bin/docker-compose -f /opt/mistborn/base.yml up
+ExecStart=/usr/local/bin/docker compose -f /opt/mistborn/base.yml up
 # Stop container when unit is stopped
-ExecStop=/usr/local/bin/docker-compose -f /opt/mistborn/base.yml down
+ExecStop=/usr/local/bin/docker compose -f /opt/mistborn/base.yml down
 # Post stop
 ExecStopPost=-/sbin/iptables -D DOCKER-USER -i DIFACE -p udp --dport 53 -j MISTBORN_LOG_DROP
 ExecStopPost=-/sbin/iptables -D DOCKER-USER -i DIFACE -p tcp --dport 53 -j MISTBORN_LOG_DROP

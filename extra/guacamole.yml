@@ -21,7 +21,7 @@ services:
     - ../.envs/.production/.guacamole
     environment:
       PGDATA: /var/lib/postgresql/data/guacamole
-    image: postgres
+    image: postgres:13
     networks:
       guacnetwork:
     restart: unless-stopped
